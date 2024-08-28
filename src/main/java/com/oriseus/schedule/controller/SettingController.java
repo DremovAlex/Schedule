@@ -52,8 +52,7 @@ public class SettingController {
 				
     	dayProperties = new Properties();
     	try {
-			dayProperties.load(new FileInputStream(ScheduleController.getPathToAplication() + 
-					File.separator + "src" + File.separator + "main" + File.separator +"resources" + File.separator + "day.properties"));
+			dayProperties.load(new FileInputStream("day.properties"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -73,8 +72,7 @@ public class SettingController {
 	}
 	
 	public void okButtonClick() {
-        try (OutputStream output = new FileOutputStream(ScheduleController.getPathToAplication() + 
-        		File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "day.properties")) {
+        try (OutputStream output = new FileOutputStream("day.properties")) {
         	
         	dayProperties.setProperty("workingDayColor", workingDayColorPicker.getValue().toString());
             dayProperties.setProperty("dayOffColor", dayOffColorPicker.getValue().toString());

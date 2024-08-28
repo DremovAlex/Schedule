@@ -275,6 +275,7 @@ public class ScheduleController {
 		FileChooser fileChooser = new FileChooser();
 		saveFile = fileChooser.showOpenDialog(new Stage());
 		writePath(saveFile.getAbsolutePath());
+		pathToSaveFileString = saveFile.getAbsolutePath();
 	}
 	
 	public void selectDirectoryToCreateFile() {
@@ -290,6 +291,7 @@ public class ScheduleController {
 		try {
 			saveFile.createNewFile();
 			writePath(saveFile.getAbsolutePath());
+			pathToSaveFileString = saveFile.getAbsolutePath();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -1088,7 +1090,7 @@ public class ScheduleController {
      */
     private void startNewWindow(String fileName, String title, double wight, double height, boolean isResizable) throws IOException {	    
         Stage stage = new Stage();
-		FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(File.separator + fileName + ".fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/" + fileName + ".fxml"));
         Parent root = fxmlLoader.load();
         stage.setTitle(title);
         stage.setResizable(isResizable);
@@ -1139,8 +1141,7 @@ public class ScheduleController {
     }
     
     private void writePath(String path) throws FileNotFoundException, IOException {   	
-        try (OutputStream output = new FileOutputStream(getPathToAplication() + 
-        		File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "file.properties")) {
+        try (OutputStream output = new FileOutputStream("file.properties")) {
             Properties properties = new Properties();
             properties.setProperty("saveFile", path);
             properties.store(output, null);
@@ -1151,8 +1152,7 @@ public class ScheduleController {
     
     private String readPath() throws FileNotFoundException, IOException {
         String file = null;
-    	try (InputStream input = new FileInputStream(getPathToAplication() + 
-    			File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "file.properties")) {
+    	try (InputStream input = new FileInputStream("file.properties")) {
             Properties properties = new Properties();
             properties.load(input);
             file = properties.getProperty("saveFile");
@@ -1181,7 +1181,7 @@ public class ScheduleController {
     private void loadProperties() {
     	Properties dayProperties = new Properties();
     	try {
-			dayProperties.load(new FileInputStream(getPathToAplication() + File.separator + "src" + File.separator + "main" + File.separator +"resources" + File.separator + "day.properties"));
+			dayProperties.load(new FileInputStream("day.properties"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

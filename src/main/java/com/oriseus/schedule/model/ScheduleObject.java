@@ -471,8 +471,7 @@ public class ScheduleObject implements Serializable {
 	private void loadProperties() {
     	Properties dayProperties = new Properties();
     	try {
-			dayProperties.load(new FileInputStream(ScheduleController.getPathToAplication() + 
-					File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "day.properties"));
+			dayProperties.load(new FileInputStream("day.properties"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
