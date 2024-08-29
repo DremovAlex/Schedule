@@ -376,6 +376,8 @@ public class ScheduleController {
     	scrollPane.setFitToHeight(false);
     	scrollPane.setFitToWidth(true);
     	
+    	anchorPane.setMinHeight(9000);
+    	
     	pathToSaveFileString = readPath();
     	monthCount = calendar.get(Calendar.MONTH);
     	yearCount = calendar.get(Calendar.YEAR);
@@ -865,7 +867,7 @@ public class ScheduleController {
         anchorPane.setPrefSize(SCREEN_HIGHT, SCREEN_WIGHT * list.size());
         tabPane.getTabs().get(index).setContent(workersVBox);
         
-        anchorPane.setMinHeight(workersVBox.getChildren().size() * 350);
+//      anchorPane.setMinHeight(workersVBox.getChildren().size() * 350);
     }
     
     private void printAfterLoad() throws NotDefineValueException {
@@ -875,6 +877,7 @@ public class ScheduleController {
     		tab.setText(workingPlace.getWorkingPlaceName());
     		tabPane.getTabs().add(tab);
     	}
+    	
     	for (int i = 0; i < tabPane.getTabs().size(); i++) {
     		addContentToTab(i);
     	}
@@ -888,9 +891,9 @@ public class ScheduleController {
     	workerBox.setSpacing(5.0);
     	
     	Text nameText = new Text();
-//    	nameText.setFont(Font.font(18));
     	nameText.setText(person.getName() + " " + person.getSurname() + " " + person.getSecondName() + " Номер телефона: " + person.getPhoneNumber());
-		
+    	nameText.setId("name_phone_text");
+    	
     	nameText.setOnMouseClicked(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
@@ -926,14 +929,16 @@ public class ScheduleController {
     	Text workTimeText = new Text("Время работы");
     	Text overTimeText = new Text("Время переработки");
     	
-    	textBox.getChildren().add(new Text(""));
-    	textBox.getChildren().add(new Text(""));
+    	textBox.getChildren().add(new Text("Число"));
+    	textBox.getChildren().add(new Text("День недели"));
     	textBox.getChildren().add(dayShift);
     	textBox.getChildren().add(nightShift);
     	textBox.getChildren().add(startWorkTimeText);
     	textBox.getChildren().add(endWorkTimeText);
     	textBox.getChildren().add(workTimeText);
     	textBox.getChildren().add(overTimeText);
+    	
+    	textBox.setId("text_box_vbox");
     	
     	scheduleBox.getChildren().add(textBox);
     	
@@ -978,7 +983,6 @@ public class ScheduleController {
     		}
     		
     		VBox vBox = new VBox();
-    		vBox.setSpacing(10);
     		vBox.getChildren().add(dates[i]);
     		vBox.getChildren().add(rectangles1[i]);
     		vBox.getChildren().add(rectangles2[i]);

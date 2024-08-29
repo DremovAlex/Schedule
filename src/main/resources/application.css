@@ -1,13 +1,14 @@
 .button {
-	-fx-background-color: rgb(255, 255, 255); 
+
 }
 .rectangle{
 	-fx-opacity: 0.3;
 }
 Text {
-	-fx-font-size: 12pt;
+	-fx-font-size: 10pt;
 	-fx-underline: false;
 	-fx-opacity: 1.0;
+	-fx-text-origin: top;
 }
 AnchorPane {
 	
@@ -21,4 +22,18 @@ VBox {
 	-fx-spacing: 10pt;
 	-fx-alignment: top-center;
 	-fx-fill-height: true;
+}
+#text_box_vbox{
+	-fx-spacing: 7.5pt;
+}
+#text_box_vbox Text{
+	-fx-alignment: top-center;
+	-fx-font-size: 12pt;
+	-fx-strikethrough: false;
+	-fx-font-weight: 900;
+	-fx-font-style: italic;
+}
+#name_phone_text{
+	-fx-font-size: 14pt;
+	-fx-font-weight: 900;
 }
