@@ -40,6 +40,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
@@ -97,11 +99,16 @@ public class ScheduleController {
 	private int notWorkingHoursShift;
 	
 	@FXML
+	AnchorPane mainAnchorPane;
+	
+	@FXML
 	ToolBar toolBar;
 	
 	@FXML
 	Button addWorkingPlaceButton;
 	
+	@FXML
+	ScrollPane scrollPane;
 	@FXML
 	TabPane tabPane;
 	
@@ -362,8 +369,12 @@ public class ScheduleController {
 	
     @FXML
     public void initialize() throws FileNotFoundException, IOException {
-    	tabPane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
-    	tabPane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());
+
+        scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+    	
+    	scrollPane.setFitToHeight(false);
+    	scrollPane.setFitToWidth(true);
     	
     	pathToSaveFileString = readPath();
     	monthCount = calendar.get(Calendar.MONTH);
@@ -853,6 +864,8 @@ public class ScheduleController {
         
         anchorPane.setPrefSize(SCREEN_HIGHT, SCREEN_WIGHT * list.size());
         tabPane.getTabs().get(index).setContent(workersVBox);
+        
+        anchorPane.setMinHeight(workersVBox.getChildren().size() * 350);
     }
     
     private void printAfterLoad() throws NotDefineValueException {
@@ -875,7 +888,7 @@ public class ScheduleController {
     	workerBox.setSpacing(5.0);
     	
     	Text nameText = new Text();
-    	nameText.setFont(Font.font(18));
+//    	nameText.setFont(Font.font(18));
     	nameText.setText(person.getName() + " " + person.getSurname() + " " + person.getSecondName() + " Номер телефона: " + person.getPhoneNumber());
 		
     	nameText.setOnMouseClicked(new EventHandler<Event>() {

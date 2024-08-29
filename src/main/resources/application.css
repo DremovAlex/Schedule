@@ -1,0 +1,24 @@
+.button {
+	-fx-background-color: rgb(255, 255, 255); 
+}
+.rectangle{
+	-fx-opacity: 0.3;
+}
+Text {
+	-fx-font-size: 12pt;
+	-fx-underline: false;
+	-fx-opacity: 1.0;
+}
+AnchorPane {
+	
+}
+HBox {
+	-fx-spacing: 10pt;
+	-fx-alignment: top-center;
+	-fx-fill-height: true;
+}
+VBox {
+	-fx-spacing: 10pt;
+	-fx-alignment: top-center;
+	-fx-fill-height: true;
+}
