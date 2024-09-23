@@ -1,41 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="mainAnchorPane" stylesheets="@application.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oriseus.schedule.controller.ScheduleController">
+<AnchorPane fx:id="mainAnchorPane" prefHeight="462.0" prefWidth="1091.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oriseus.schedule.controller.MainController">
    <children>
-      <ToolBar fx:id="toolBar" prefHeight="40.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <items>
-            <Button fx:id="addWorkingPlaceButton" mnemonicParsing="false" onAction="#addNewWorkingPlaceButton" text="Добавить новое рабочее место" />
-            <Button fx:id="deleteWorkingPlace" mnemonicParsing="false" onAction="#deleteWorkingPlace" text="Удалить рабочее место" />
-            <Button fx:id="addNewWorker" mnemonicParsing="false" onAction="#addNewWorker" text="Добавить нового сотрудника" />
-            <MenuButton mnemonicParsing="false" text="Файл" textAlignment="CENTER">
-              <items>
-                <MenuItem fx:id="selectFile" mnemonicParsing="false" onAction="#selectFile" text="Выбрать файл" />
-                  <MenuItem fx:id="selectDirectoryToCreateFile" mnemonicParsing="false" onAction="#selectDirectoryToCreateFile" text="Создать файл" />
-                  <MenuItem fx:id="saveProgress" mnemonicParsing="false" onAction="#saveProgress" text="Сохранить" />
-                  <MenuItem fx:id="loadProgress" mnemonicParsing="false" onAction="#loadProgress" text="Загрузить" />
-              </items>
-            </MenuButton>
-            <MenuButton mnemonicParsing="false" text="Настройки">
-              <items>
-                <MenuItem fx:id="settingsItem" mnemonicParsing="false" onAction="#settings" text="Настройки" />
-                <MenuItem mnemonicParsing="false" text="Action 2" />
-              </items>
-            </MenuButton>
-        </items>
-      </ToolBar>
-      <ScrollPane fx:id="scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
+      <TabPane prefHeight="100.0" prefWidth="1091.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <tabs>
+          <Tab text="Рабочие места">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+          <Tab text="Untitled Tab 2">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+            <Tab text="Untitled Tab">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+            <Tab text="Untitled Tab">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+      <AnchorPane prefHeight="50.0" prefWidth="1091.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+         <children>
+            <Button layoutX="417.0" layoutY="13.0" mnemonicParsing="false" text="Button" />
+            <Button layoutX="641.0" layoutY="13.0" mnemonicParsing="false" text="Button" />
+            <Label layoutX="532.0" layoutY="17.0" text="Label" AnchorPane.leftAnchor="532.0" />
+         </children>
+      </AnchorPane>
+      <ScrollPane fx:id="mainScrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0">
          <content>
             <AnchorPane fx:id="anchorPane">
                <children>
-                  <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <TabPane fx:id="mainTabPane" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
          </content>
