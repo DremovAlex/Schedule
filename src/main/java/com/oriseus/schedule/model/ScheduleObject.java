@@ -56,7 +56,7 @@ public class ScheduleObject {
 		
 		int counterDay = 1;
 		
-		while (dayLinkedList.getLast().getDate() != futureDate) {
+		while (dayLinkedList.getLast().getDate().isEqual(futureDate)) {
 			dayLinkedList.add(new Day(day.getDate().plusDays(counterDay)));
 		}
 	}
