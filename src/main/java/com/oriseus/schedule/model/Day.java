@@ -12,11 +12,16 @@ public class Day {
 	
 	private LocalDateTime startWorkTime;
 	private LocalDateTime endWorkTime;
+
+	private ScheduleType scheduleType;
 	
 	public Day(LocalDate date) {
 		this.date = date;
+		
 		stackDayStatus = new Stack<DayStatus>();
 		stackDayStatus.push(DayStatus.DayOff);
+		
+		scheduleType = ScheduleType.NotSet;
 	}
 
 	public LocalDate getDate() {
@@ -53,5 +58,13 @@ public class Day {
 	
 	public void pushDayStatus(DayStatus dayStatus) {
 		stackDayStatus.push(dayStatus);
+	}
+	
+	public void setScheduleType(ScheduleType scheduleType) {
+		this.scheduleType = scheduleType;
+	}
+	
+	public ScheduleType getScheduleType() {
+		return scheduleType;
 	}
 }

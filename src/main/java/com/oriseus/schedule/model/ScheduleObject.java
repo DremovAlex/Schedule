@@ -35,7 +35,7 @@ public class ScheduleObject {
 		List<Day> daysOfYearList = getDaysOfYear(year);
 		List<Day> daysOfMonthList = new LinkedList<Day>();
 		
-		for (Day day : dayLinkedList) {
+		for (Day day : daysOfYearList) {
 			if (day.getDate().getMonthValue() == month) {
 				daysOfMonthList.add(day);
 			} else if (day.getDate().getMonthValue() < month) {
@@ -47,7 +47,6 @@ public class ScheduleObject {
 	}
 	
 	private void setListOfDays() {
-		
 		LocalDate pastDate = LocalDate.of(2020, 1, 1);
 		LocalDate futureDate = LocalDate.of(2039, 12, 31);
 		
