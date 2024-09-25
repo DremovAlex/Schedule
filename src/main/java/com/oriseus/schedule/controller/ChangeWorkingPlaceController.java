@@ -1,5 +1,6 @@
 package com.oriseus.schedule.controller;
 
+import com.oriseus.schedule.Company;
 import com.oriseus.schedule.utils.WindowHandler;
 
 import javafx.fxml.FXML;
@@ -16,18 +17,19 @@ public class ChangeWorkingPlaceController {
     @FXML
     Button cancelButton;
 
-    MainController mainController;
+    private static String tabName;
 
     @FXML
     public void initialize() {
-  
-        textField.setText(mainController.getNameOfSelectedTab());
+        tabName = MainController.currentTabName;
+        textField.setText(tabName);
     }
 
     @FXML
     public void okButtonClick() {
         if (!textField.getText().isEmpty() || !textField.getText().isBlank()) {
-			mainController.changeWorkingPlaceName(textField.getText());
+			Company.getInstants().changeNameWorkingPlaceByName(tabName, textField.getText());
+            MainController.currentTabName = null;
 		} else {
 			WindowHandler.getInstants().showErrorMessage("Название рабочего места пустое.", "Пожалуйста укажите название рабочего места.");
 		}
