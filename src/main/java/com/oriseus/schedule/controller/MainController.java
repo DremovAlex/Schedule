@@ -21,7 +21,7 @@ import javafx.scene.text.Text;
 
 public class MainController {
 	
-	public List<WorkingPlace> workingPlaces;
+	private List<WorkingPlace> workingPlaces = new ArrayList<WorkingPlace>();
 	
 	@FXML
 	ScrollPane mainScrollPane;
@@ -34,30 +34,14 @@ public class MainController {
 	Button changeWorkingPlaceButton;
 	@FXML
 	Button deleteWorkingPlaceButton;
-	
+
     @FXML
     public void initialize() {
-    	
-    	workingPlaces = new ArrayList<WorkingPlace>();
-    	
-    	
-    	
-    	
-    	WorkingPlace reguan = new WorkingPlace("Reguan");
-    	Worker worker = new Worker("Ivan", "Ivanov", "Ivanovich", "9 999 999 99 99");
-    	reguan.addWorker(worker);
-    	
-        Tab tab = new Tab(reguan.getName());
-        
-        VBox mainBox = new VBox();
-        mainBox.getChildren().add(getNameAndPhoneNumber(reguan.getListOfWorkers().getFirst()));
-        mainBox.getChildren().add(addRectangles(30));
-        
-        tab.setContent(mainBox);
-        
-        mainTabPane.getTabs().add(tab);
+		mainTabPane.getTabs().add(new Tab("fdjghnkjdfhnkg"));
+		mainTabPane.getTabs().add(new Tab("fdjghnkjdfhnkg"));
+		mainTabPane.getTabs().add(new Tab("fdjghnkjdfhnkg"));
     }
-    
+
     private VBox getNameAndPhoneNumber(Worker worker) {
     	Text name = new Text(worker.getSurname() + " " + worker.getName() + " " + worker.getSecondName());
     	Text phoneNumber = new Text(worker.getPhoneNumber());
@@ -96,13 +80,44 @@ public class MainController {
     	return rectangleBox;
     }
 
+	public void addNewWorkingPlace(String nameOfWorkingPlace) {
+
+		System.out.println(mainTabPane + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+		workingPlaces.add(new WorkingPlace(nameOfWorkingPlace));
+		Tab tab = new Tab(nameOfWorkingPlace);
+		mainTabPane.getTabs().add(tab);
+//		refreshScene();
+	}
+
+	public void changeWorkingPlaceName(String newNameOfWorkingPlace) {
+		for (WorkingPlace workingPlace : workingPlaces) {
+			if (workingPlace.getName().equals(getNameOfSelectedTab())) {
+				workingPlace.setName(newNameOfWorkingPlace);
+				break;
+			}
+		}
+
+		//refreshScene();
+	}
+
+	public String getNameOfSelectedTab() {
+		return mainTabPane.getSelectionModel().getSelectedItem().getText();
+	}
+
+	private void refreshScene() {
+		mainTabPane.getTabs().clear();
+		for (WorkingPlace workingPlace : workingPlaces) {
+			mainTabPane.getTabs().add(new Tab(workingPlace.getName()));
+		}
+	}
+
     @FXML
-    public void createNewWorkingPlace() {    	
+    public void createNewWorkingPlace() {
     	try {
 			WindowHandler.getInstants().openModalWindow("Создание нового рабочего места", 
-					"workingPlaceWindow");
+					"newWorkingPlaceWindow");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
@@ -111,9 +126,8 @@ public class MainController {
     public void changeWorkingPlace() {
     	try {
     		WindowHandler.getInstants().openModalWindow("Изменение названия рабочего места", 
-    				"workingPlaceWindow");
+    				"changeWorkingPlace");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }

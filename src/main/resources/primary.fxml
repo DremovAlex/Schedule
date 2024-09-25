@@ -47,7 +47,7 @@
       </AnchorPane>
       <ScrollPane fx:id="mainScrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0">
          <content>
-            <AnchorPane fx:id="anchorPane">
+            <AnchorPane fx:id="anchorPane" prefHeight="671.0" prefWidth="1424.0">
                <children>
                   <TabPane fx:id="mainTabPane" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
