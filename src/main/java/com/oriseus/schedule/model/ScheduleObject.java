@@ -72,4 +72,23 @@ public class ScheduleObject {
 	public void setDayLinkedList(List<Day> dayLinkedList) {
 		this.dayLinkedList = dayLinkedList;
 	}
+
+	public void setDaySelected(int day, int month, int year) {
+		for (Day tempDay : getDaysOfMonth(year, month)) {
+			if (tempDay.getDate().getDayOfMonth() == day) {
+				tempDay.setSelected(true);
+				break;
+			}
+		}
+	}
+
+	public void setNotSelected() {
+		for (Day tempDay : getDayLinkedList()) {
+			if (tempDay.isSelected()) {
+				tempDay.setSelected(false);
+				break;
+			}
+		}
+	}
+
 }

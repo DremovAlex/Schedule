@@ -2,8 +2,10 @@ package com.oriseus.schedule.controller;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 import com.oriseus.schedule.Company;
+import com.oriseus.schedule.model.Day;
 import com.oriseus.schedule.model.Worker;
 import com.oriseus.schedule.model.WorkingPlace;
 import com.oriseus.schedule.utils.WindowHandler;
@@ -212,14 +214,19 @@ public class MainController {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
 				if (mouseEvent.isPrimaryButtonDown()) {
-					name.setUnderline(true);
-					tempWorker = worker;
+					Company.getInstants().getWorkingPlace(getNameOfSelectedTab()).setWorkerNotSelected();
+					Company.getInstants().getWorkingPlace(getNameOfSelectedTab()).setWorkerSelected(worker);
+					refreshScene();
 				} else if (mouseEvent.isSecondaryButtonDown()) {
 					tempWorker = worker;
 					workerContextMenu.show(name, Side.BOTTOM, 0, 0);
 				}
 			}
 		});
+
+		if (worker.isSelected()) {
+			name.setUnderline(true);
+		}
 
     	VBox vbox = new VBox();
     	
@@ -229,17 +236,38 @@ public class MainController {
     	return vbox;
     }
     
-    private HBox addRectangles(int days) {
+    private HBox addRectangles(List<Day> daysList, Worker worker) {
+
     	HBox hBox = new HBox();
     	hBox.setSpacing(10);
     	
-    	for (int i = 0; i < days; i++) {
-    		hBox.getChildren().add(getRectangle());
+    	for (int i = 0; i < daysList.size(); i++) {
+
+			VBox rectangleBox = getRectangle();
+			final int day = i + 1;
+
+			rectangleBox.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent mouseEvent) {
+					if (mouseEvent.isPrimaryButtonDown()) {
+						worker.getScheduleObject().setNotSelected();
+						worker.getScheduleObject().setDaySelected(day, month, year);
+						refreshScene();
+					} 
+				}
+			});
+
+			if (daysList.get(i).isSelected()) {
+				rectangleBox.setStyle("-fx-border-width: 2pt; -fx-border-color: red");
+			}
+
+			hBox.getChildren().add(rectangleBox);
     	}
 
     	return hBox;
     }
     
+	//Возвращает vbox состоящий из 24 квадратов, илюстрирующих часы дня
     private VBox getRectangle() {
     	VBox rectangleBox = new VBox();
     	
@@ -251,18 +279,6 @@ public class MainController {
     		
     		rectangleBox.getChildren().add(rectangles[i]);
     	}    	
-
-		rectangleBox.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent mouseEvent) {
-				if (mouseEvent.isPrimaryButtonDown()) {
-					rectangleBox.setStyle("-fx-border-width: 2pt; -fx-border-color: red");
-				} else if (mouseEvent.isSecondaryButtonDown()) {
-					
-				}
-			}
-		});
-
     	return rectangleBox;
     }
 
@@ -286,14 +302,11 @@ public class MainController {
 	private void addContentToTab(Tab tab, WorkingPlace workingPlace) {
 		VBox vBox = new VBox();
 
-		int daysInMonth = 0;
-
 		for (Worker worker : workingPlace.getListOfWorkers()) {
 			VBox box = new VBox();
 
-			daysInMonth = worker.getScheduleObject().getNumberOfDaysInMonth(year, month);
 			box.getChildren().add(getNameAndPhoneNumber(worker));
-			box.getChildren().add(addRectangles(daysInMonth));
+			box.getChildren().add(addRectangles(worker.getScheduleObject().getDaysOfMonth(year, month), worker));
 			vBox.getChildren().add(box);			
 		}
 		tab.setContent(vBox);

@@ -7,6 +7,7 @@ public class Worker {
 	private String secondName;
 	private String phoneNumber;
 	private ScheduleObject scheduleObject;
+	private boolean isSelected;
 	
 	public Worker(String name, String surname, String secondName) {
 		this.name = name;
@@ -61,5 +62,13 @@ public class Worker {
 
 	public void setScheduleObject(ScheduleObject scheduleObject) {
 		this.scheduleObject = scheduleObject;
+	}
+
+	public void setSelected(boolean isSelected) {
+		this.isSelected = isSelected;
+	}
+
+	public boolean isSelected() {
+		return isSelected;
 	}
 }

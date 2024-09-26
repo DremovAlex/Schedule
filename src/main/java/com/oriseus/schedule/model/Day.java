@@ -14,6 +14,8 @@ public class Day {
 	private LocalDateTime endWorkTime;
 
 	private ScheduleType scheduleType;
+
+	private boolean isSelected;
 	
 	public Day(LocalDate date) {
 		this.date = date;
@@ -66,5 +68,13 @@ public class Day {
 	
 	public ScheduleType getScheduleType() {
 		return scheduleType;
+	}
+
+	public void setSelected(boolean isSelected) {
+		this.isSelected = isSelected;
+	}
+
+	public boolean isSelected() {
+		return isSelected;
 	}
 }
