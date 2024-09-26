@@ -25,11 +25,11 @@ public class WindowHandler {
 		}
 	}
 	
-	public void openModalWindow(String windowTitle, String windowPath) throws IOException {
+	public void openModalWindow(String windowTitle, String windowPath, int width, int height) throws IOException {
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource(windowPath + ".fxml"));
         Stage stage = new Stage();
         stage.setTitle(windowTitle);
-        stage.setScene(new Scene(root, 500, 200));
+        stage.setScene(new Scene(root, width, height));
         stage.showAndWait();
 	}
 

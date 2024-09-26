@@ -43,6 +43,7 @@ public class MainController {
 									 "Декабрь"};
 
 	private int month;
+	private int year;
 
 	@FXML
 	ScrollPane mainScrollPane;
@@ -80,7 +81,9 @@ public class MainController {
     public void initialize() {
 
 		month = LocalDate.now().getMonthValue();
-		monthLabel.setText(months[month]);
+		year = LocalDate.now().getYear();
+		monthLabel.setText(months[month] + " " + year);
+
 		monthLabel.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
@@ -203,7 +206,7 @@ public class MainController {
 
     private VBox getNameAndPhoneNumber(Worker worker) {
     	Text name = new Text(worker.getSurname() + " " + worker.getName() + " " + worker.getSecondName());
-    	Text phoneNumber = new Text(worker.getPhoneNumber());
+    	Text phoneNumber = new Text("Номер телефона: " + worker.getPhoneNumber());
     	
 		name.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 			@Override
@@ -243,11 +246,22 @@ public class MainController {
     	Rectangle[] rectangles = new Rectangle[24];
     	
     	for (int i = 0; i < rectangles.length; i++) {
-    		rectangles[i] = new Rectangle(60, 10);
+    		rectangles[i] = new Rectangle(30, 5);
     		rectangles[i].setFill(Color.BLUE);
     		
     		rectangleBox.getChildren().add(rectangles[i]);
     	}    	
+
+		rectangleBox.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+				if (mouseEvent.isPrimaryButtonDown()) {
+					rectangleBox.setStyle("-fx-border-width: 2pt; -fx-border-color: red");
+				} else if (mouseEvent.isSecondaryButtonDown()) {
+					
+				}
+			}
+		});
 
     	return rectangleBox;
     }
@@ -257,7 +271,7 @@ public class MainController {
 	}
 
 	private void refreshScene() {
-		monthLabel.setText(months[month]);
+		monthLabel.setText(months[month] + year);
 		mainTabPane.getTabs().clear();
 
 		for (WorkingPlace workingPlace : Company.getInstants().getWorkingPlasesList()) {
@@ -271,10 +285,15 @@ public class MainController {
 
 	private void addContentToTab(Tab tab, WorkingPlace workingPlace) {
 		VBox vBox = new VBox();
+
+		int daysInMonth = 0;
+
 		for (Worker worker : workingPlace.getListOfWorkers()) {
 			VBox box = new VBox();
+
+			daysInMonth = worker.getScheduleObject().getNumberOfDaysInMonth(year, month);
 			box.getChildren().add(getNameAndPhoneNumber(worker));
-			box.getChildren().add(addRectangles(30));
+			box.getChildren().add(addRectangles(daysInMonth));
 			vBox.getChildren().add(box);			
 		}
 		tab.setContent(vBox);
@@ -284,7 +303,7 @@ public class MainController {
     public void createNewWorkingPlace() {
     	try {
     		WindowHandler.getInstants().openModalWindow("Изменение названия рабочего места", 
-    				"newWorkingPlaceWindow");
+    				"newWorkingPlaceWindow", 500, 200);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -297,7 +316,7 @@ public class MainController {
 		currentTabName = getNameOfSelectedTab();
     	try {
     		WindowHandler.getInstants().openModalWindow("Изменение названия рабочего места", 
-    				"changeWorkingPlaceWindow");
+    				"changeWorkingPlaceWindow", 500, 200);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -322,7 +341,7 @@ public class MainController {
 	public void addNewWorker() {
 		try {
     		WindowHandler.getInstants().openModalWindow("Создание нового работника", 
-    				"newWorkerWindow");
+    				"newWorkerWindow", 600, 600);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -340,7 +359,8 @@ public class MainController {
 	public void changeWorker() {
 
 		if (tempWorker == null) {
-			WindowHandler.getInstants().showErrorMessage("Не выбран работник.", "Пожалуйста, выберите работника перед изминением.");
+			WindowHandler.getInstants().showErrorMessage("Не выбран работник.", 
+			"Пожалуйста, выберите работника перед изминением.");
 			return;
 		} 
 
@@ -348,7 +368,7 @@ public class MainController {
 
 		try {
     		WindowHandler.getInstants().openModalWindow("Изменение данных работника", 
-    				"changeWorkerWindow");
+    				"changeWorkerWindow", 600, 600);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -407,13 +427,23 @@ public class MainController {
 
 	@FXML
 	private void leftMonthButtonPressed() {
-		if (month > 1) --month;
+		if (month > 1) {
+			--month;
+		} else if (month == 1 && year > 2020) {
+			--year;
+			month = 12;
+		}
 		refreshScene();
 	}
 
 	@FXML
 	private void rightMonthButtonPressed() {
-		if (month < 12) ++month;
+		if (month < 12) {
+			++month;
+		} else if (month == 12 && year < 2035) {
+			++year;
+			month = 1;
+		}
 		refreshScene();
 	}
 }

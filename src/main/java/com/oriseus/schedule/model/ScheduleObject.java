@@ -21,7 +21,7 @@ public class ScheduleObject {
 		for (Day day : dayLinkedList) {
 			if (day.getDate().getYear() == year) {
 				daysOfYearList.add(day);
-			} else if (day.getDate().getYear() < year) {
+			} else if (day.getDate().getYear() > year) {
 				break;
 			}
 		}
@@ -38,7 +38,7 @@ public class ScheduleObject {
 		for (Day day : daysOfYearList) {
 			if (day.getDate().getMonthValue() == month) {
 				daysOfMonthList.add(day);
-			} else if (day.getDate().getMonthValue() < month) {
+			} else if (day.getDate().getMonthValue() > month) {
 				break;
 			}
 		}
@@ -46,6 +46,10 @@ public class ScheduleObject {
 		return daysOfMonthList;
 	}
 	
+	public int getNumberOfDaysInMonth(int year, int month) {
+		return getDaysOfMonth(year, month).size();
+	}
+
 	private void setListOfDays() {
 		LocalDate pastDate = LocalDate.of(2020, 1, 1);
 		LocalDate futureDate = LocalDate.of(2039, 12, 31);
@@ -55,8 +59,9 @@ public class ScheduleObject {
 		
 		int counterDay = 1;
 		
-		while (dayLinkedList.getLast().getDate().isEqual(futureDate)) {
+		while (!dayLinkedList.getLast().getDate().isEqual(futureDate)) {
 			dayLinkedList.add(new Day(day.getDate().plusDays(counterDay)));
+			counterDay++;
 		}
 	}
 
