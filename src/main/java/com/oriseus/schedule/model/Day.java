@@ -1,7 +1,7 @@
 package com.oriseus.schedule.model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Stack;
 
 public class Day {
@@ -10,18 +10,16 @@ public class Day {
 	
 	private Stack<DayStatus> stackDayStatus;
 	
-	private LocalDateTime startWorkTime;
-	private LocalDateTime endWorkTime;
+	private LocalTime startWorkTime;
+	private LocalTime endWorkTime;
 
 	private ScheduleType scheduleType;
-
-	private boolean isSelected;
 	
 	public Day(LocalDate date) {
 		this.date = date;
 		
 		stackDayStatus = new Stack<DayStatus>();
-		stackDayStatus.push(DayStatus.DayOff);
+		stackDayStatus.push(DayStatus.NotSet);
 		
 		scheduleType = ScheduleType.NotSet;
 	}
@@ -34,19 +32,19 @@ public class Day {
 		this.date = date;
 	}
 
-	public LocalDateTime getStartWorkTime() {
+	public LocalTime getStartWorkTime() {
 		return startWorkTime;
 	}
 
-	public void setStartWorkTime(LocalDateTime startWorkTime) {
+	public void setStartWorkTime(LocalTime startWorkTime) {
 		this.startWorkTime = startWorkTime;
 	}
 
-	public LocalDateTime getEndWorkTime() {
+	public LocalTime getEndWorkTime() {
 		return endWorkTime;
 	}
 
-	public void setEndWorkTime(LocalDateTime endWorkTime) {
+	public void setEndWorkTime(LocalTime endWorkTime) {
 		this.endWorkTime = endWorkTime;
 	}
 	
@@ -68,13 +66,5 @@ public class Day {
 	
 	public ScheduleType getScheduleType() {
 		return scheduleType;
-	}
-
-	public void setSelected(boolean isSelected) {
-		this.isSelected = isSelected;
-	}
-
-	public boolean isSelected() {
-		return isSelected;
 	}
 }

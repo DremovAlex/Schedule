@@ -35,22 +35,4 @@ public class WorkingPlace {
 	public void removeWorker(Worker worker) {
 		listOfWorkers.remove(worker);
 	}
-
-	public void setWorkerSelected(Worker worker) {
-		for (Worker tempWorker : listOfWorkers) {
-			if (tempWorker.equals(worker)) {
-				tempWorker.setSelected(true);
-				break;
-			}
-		}
-	}
-
-	public void setWorkerNotSelected() {
-		for (Worker tempWorker : listOfWorkers) {
-			if (tempWorker.isSelected()) {
-				tempWorker.setSelected(false);
-				break;
-			}
-		}
-	}
 }

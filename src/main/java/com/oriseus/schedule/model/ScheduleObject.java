@@ -3,6 +3,8 @@ package com.oriseus.schedule.model;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 
 public class ScheduleObject {
 
@@ -45,9 +47,33 @@ public class ScheduleObject {
 		
 		return daysOfMonthList;
 	}
+
+	//Возвращает конкретный день в месяце
+	public Day getDayByYearAndMonth(int year, int month, int day) {
+		return getDaysOfMonth(year, month).get(day - 1);
+	}
 	
 	public int getNumberOfDaysInMonth(int year, int month) {
 		return getDaysOfMonth(year, month).size();
+	}
+
+	//Расписание 5/2
+	public void setFiveToTwoSchedule(Day startDay) {
+		
+		for (Day day : dayLinkedList) {
+			if (day.getDate().isAfter(startDay.getDate())) {
+				day.setScheduleType(ScheduleType.FiveToTwo);
+				
+				if (day.getDate().getDayOfWeek().equals(DayOfWeek.SATURDAY) || day.getDate().getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
+					day.pushDayStatus(DayStatus.DayOff);
+				} else {
+					day.pushDayStatus(DayStatus.WorkingDay);
+					day.setStartWorkTime(LocalTime.of(8, 30));
+					day.setEndWorkTime(LocalTime.of(17, 30));
+				}
+			
+			}
+		}
 	}
 
 	private void setListOfDays() {
@@ -72,23 +98,4 @@ public class ScheduleObject {
 	public void setDayLinkedList(List<Day> dayLinkedList) {
 		this.dayLinkedList = dayLinkedList;
 	}
-
-	public void setDaySelected(int day, int month, int year) {
-		for (Day tempDay : getDaysOfMonth(year, month)) {
-			if (tempDay.getDate().getDayOfMonth() == day) {
-				tempDay.setSelected(true);
-				break;
-			}
-		}
-	}
-
-	public void setNotSelected() {
-		for (Day tempDay : getDayLinkedList()) {
-			if (tempDay.isSelected()) {
-				tempDay.setSelected(false);
-				break;
-			}
-		}
-	}
-
 }

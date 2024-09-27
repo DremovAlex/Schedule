@@ -1,7 +1,10 @@
 package com.oriseus.schedule.controller;
 
 import java.io.IOException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.Locale;
+import java.time.format.TextStyle;
 import java.util.List;
 
 import com.oriseus.schedule.Company;
@@ -46,6 +49,8 @@ public class MainController {
 
 	private int month;
 	private int year;
+	private Worker selectedWorker;
+	private Day selectedDay;
 
 	@FXML
 	ScrollPane mainScrollPane;
@@ -209,13 +214,23 @@ public class MainController {
     private VBox getNameAndPhoneNumber(Worker worker) {
     	Text name = new Text(worker.getSurname() + " " + worker.getName() + " " + worker.getSecondName());
     	Text phoneNumber = new Text("Номер телефона: " + worker.getPhoneNumber());
+
+		Text whatIsSelected = new Text();
+		if (selectedDay != null) {
+			Locale locale = new Locale.Builder().setLanguage("ru").setRegion("RU").build();
+			whatIsSelected.setText("Выбрано: " + selectedDay.getDate().getDayOfMonth() + " " + 
+												months[selectedDay.getDate().getMonthValue()] + " " + 
+												selectedDay.getDate().getYear() + " " + 
+												getDayString(selectedDay.getDate(), locale));
+		} else {
+			whatIsSelected.setText("");
+		}
     	
 		name.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
 				if (mouseEvent.isPrimaryButtonDown()) {
-					Company.getInstants().getWorkingPlace(getNameOfSelectedTab()).setWorkerNotSelected();
-					Company.getInstants().getWorkingPlace(getNameOfSelectedTab()).setWorkerSelected(worker);
+					selectedWorker = worker;
 					refreshScene();
 				} else if (mouseEvent.isSecondaryButtonDown()) {
 					tempWorker = worker;
@@ -224,7 +239,7 @@ public class MainController {
 			}
 		});
 
-		if (worker.isSelected()) {
+		if (worker.equals(selectedWorker)) {
 			name.setUnderline(true);
 		}
 
@@ -232,6 +247,7 @@ public class MainController {
     	
     	vbox.getChildren().add(name);
     	vbox.getChildren().add(phoneNumber);
+		vbox.getChildren().add(whatIsSelected);
     	
     	return vbox;
     }
@@ -244,20 +260,21 @@ public class MainController {
     	for (int i = 0; i < daysList.size(); i++) {
 
 			VBox rectangleBox = getRectangle();
-			final int day = i + 1;
+			final int day = i;
 
 			rectangleBox.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent mouseEvent) {
 					if (mouseEvent.isPrimaryButtonDown()) {
-						worker.getScheduleObject().setNotSelected();
-						worker.getScheduleObject().setDaySelected(day, month, year);
+						selectedDay = daysList.get(day);
 						refreshScene();
-					} 
+					} else if (mouseEvent.isSecondaryButtonDown()) {
+						//Добавить контекстное меню с действиями
+					}
 				}
 			});
 
-			if (daysList.get(i).isSelected()) {
+			if (daysList.get(i).equals(selectedDay)) {
 				rectangleBox.setStyle("-fx-border-width: 2pt; -fx-border-color: red");
 			}
 
@@ -458,5 +475,10 @@ public class MainController {
 			month = 1;
 		}
 		refreshScene();
+	}
+
+	private String getDayString(LocalDate date, Locale locale) {
+		DayOfWeek day = date.getDayOfWeek();
+		return day.getDisplayName(TextStyle.FULL, locale);
 	}
 }
