@@ -259,7 +259,7 @@ public class MainController {
     	
     	for (int i = 0; i < daysList.size(); i++) {
 
-			VBox rectangleBox = getRectangle();
+			VBox rectangleBox = getRectangle(i + 1);
 			final int day = i;
 
 			rectangleBox.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
@@ -285,9 +285,10 @@ public class MainController {
     }
     
 	//Возвращает vbox состоящий из 24 квадратов, илюстрирующих часы дня
-    private VBox getRectangle() {
+    private VBox getRectangle(int date) {
     	VBox rectangleBox = new VBox();
-    	
+    	rectangleBox.getChildren().add(new Text(String.valueOf(date)));
+
     	Rectangle[] rectangles = new Rectangle[24];
     	
     	for (int i = 0; i < rectangles.length; i++) {

@@ -76,6 +76,54 @@ public class ScheduleObject {
 		}
 	}
 
+	public void setTwoToTwoSchedule(Day startDay, int numberOfDay) {
+		for (int i = 0; i < dayLinkedList.size(); i++) {
+			if (dayLinkedList.get(i).getDate().isAfter(startDay.getDate())) {
+				dayLinkedList.get(i).setScheduleType(ScheduleType.TwoToTwo);
+				if (numberOfDay == 1 || numberOfDay == 2) {
+					dayLinkedList.get(i).pushDayStatus(DayStatus.WorkingDay);
+					dayLinkedList.get(i).setStartWorkTime(LocalTime.of(8, 30));
+					dayLinkedList.get(i).setEndWorkTime(LocalTime.of(20, 30));
+					numberOfDay++;
+				} else if (numberOfDay == 3 ) {
+					dayLinkedList.get(i).pushDayStatus(DayStatus.DayOff);
+					numberOfDay++; 
+				} else {
+					dayLinkedList.get(i).pushDayStatus(DayStatus.DayOff);
+					numberOfDay = 1;
+				}
+			}
+		}
+	}
+
+	public void setFourToFourSchedule(Day startDay, int numberOfDay) {
+		for (int i = 0; i < dayLinkedList.size(); i++) {
+			if (dayLinkedList.get(i).getDate().isAfter(startDay.getDate())) {
+				dayLinkedList.get(i).setScheduleType(ScheduleType.FourToFour);
+				if (numberOfDay == 1 || numberOfDay == 2) {
+					dayLinkedList.get(i).pushDayStatus(DayStatus.WorkingDay);
+					dayLinkedList.get(i).setStartWorkTime(LocalTime.of(8, 30));
+					dayLinkedList.get(i).setEndWorkTime(LocalTime.of(20, 30));
+					numberOfDay++;
+				} else if (numberOfDay == 3 || numberOfDay == 4) {
+					dayLinkedList.get(i).pushDayStatus(DayStatus.DayOff);
+					numberOfDay++; 
+				} else if (numberOfDay == 5 || numberOfDay == 6) {
+					dayLinkedList.get(i).pushDayStatus(DayStatus.WorkingDay);
+					dayLinkedList.get(i).setStartWorkTime(LocalTime.of(8, 30));
+					dayLinkedList.get(i).setEndWorkTime(LocalTime.of(20, 30));
+					numberOfDay++;
+				} else if (numberOfDay == 7) {
+					dayLinkedList.get(i).pushDayStatus(DayStatus.DayOff);
+					numberOfDay++; 
+				} else {
+					dayLinkedList.get(i).pushDayStatus(DayStatus.DayOff);
+					numberOfDay = 1;
+				}
+			}
+		}
+	}
+
 	private void setListOfDays() {
 		LocalDate pastDate = LocalDate.of(2020, 1, 1);
 		LocalDate futureDate = LocalDate.of(2039, 12, 31);
