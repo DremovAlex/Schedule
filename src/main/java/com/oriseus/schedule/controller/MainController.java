@@ -9,6 +9,8 @@ import java.util.List;
 
 import com.oriseus.schedule.Company;
 import com.oriseus.schedule.model.Day;
+import com.oriseus.schedule.model.DayStatus;
+import com.oriseus.schedule.model.ScheduleType;
 import com.oriseus.schedule.model.Worker;
 import com.oriseus.schedule.model.WorkingPlace;
 import com.oriseus.schedule.utils.WindowHandler;
@@ -26,6 +28,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -80,6 +83,7 @@ public class MainController {
 
 	ContextMenu workerContextMenu;
 	ContextMenu monthContextMenu;
+	ContextMenu setScheduleContextMenu;
 
 	public static String currentTabName; 
 	public static Worker tempWorker;
@@ -209,6 +213,47 @@ public class MainController {
 		});
 		
 		monthContextMenu.getItems().addAll(januaryMenuItem, februaryMenuItem, marchMenuItem, aprilMenuItem, mayMenuItem, juneMenuItem, julyMenuItem, augustMenuItem, septemberMenuItem, novemberMenuItem, decemberMenuItem);
+
+		setScheduleContextMenu = new ContextMenu();
+		MenuItem setFiveToTwoMenuItem = new MenuItem("Установить расписание 5/2");
+		MenuItem setTwoToTwoMenuItem = new MenuItem("Установить расписание 2/2 без ночных смен");
+		MenuItem setFourToFourMenuItem = new MenuItem("Установить расписание 2/2 с ночными сменами");
+
+		setFiveToTwoMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+				if (!selectedDay.getScheduleType().equals(ScheduleType.NotSet)) {
+					WindowHandler.getInstants().showErrorMessage("Расписание уже задано", "Нельзя указать расписание поверх уже существующего. Пожалуйста сначала удалите старое расписание.");
+					return;
+				}
+				tempWorker.getScheduleObject().setFiveToTwoSchedule(selectedDay);		
+				refreshScene();
+				tempWorker = null;
+			}
+		});
+		setTwoToTwoMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+				if (!selectedDay.getScheduleType().equals(ScheduleType.NotSet)) {
+					WindowHandler.getInstants().showErrorMessage("Расписание уже задано", "Нельзя указать расписание поверх уже существующего. Пожалуйста сначала удалите старое расписание.");
+					return;
+				}
+				tempWorker.getScheduleObject().setTwoToTwoSchedule(selectedDay, 1);		
+				refreshScene();
+				tempWorker = null;
+			}
+		});
+		setFourToFourMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+				if (!selectedDay.getScheduleType().equals(ScheduleType.NotSet)) {
+					WindowHandler.getInstants().showErrorMessage("Расписание уже задано", "Нельзя указать расписание поверх уже существующего. Пожалуйста сначала удалите старое расписание.");
+					return;
+				}
+				tempWorker.getScheduleObject().setFourToFourSchedule(selectedDay, 1);
+				refreshScene();
+				tempWorker = null;
+			}
+		});
+
+		setScheduleContextMenu.getItems().addAll(setFiveToTwoMenuItem, setTwoToTwoMenuItem, setFourToFourMenuItem);
     }
 
     private VBox getNameAndPhoneNumber(Worker worker) {
@@ -259,7 +304,7 @@ public class MainController {
     	
     	for (int i = 0; i < daysList.size(); i++) {
 
-			VBox rectangleBox = getRectangle(i + 1);
+			VBox rectangleBox = getRectangle(daysList.get(i));
 			final int day = i;
 
 			rectangleBox.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
@@ -269,7 +314,10 @@ public class MainController {
 						selectedDay = daysList.get(day);
 						refreshScene();
 					} else if (mouseEvent.isSecondaryButtonDown()) {
-						//Добавить контекстное меню с действиями
+						if (selectedDay != null && selectedDay.equals(daysList.get(day))) {
+							tempWorker = worker;					
+							setScheduleContextMenu.show(rectangleBox, Side.BOTTOM, 0, 0);
+						}
 					}
 				}
 			});
@@ -285,20 +333,76 @@ public class MainController {
     }
     
 	//Возвращает vbox состоящий из 24 квадратов, илюстрирующих часы дня
-    private VBox getRectangle(int date) {
+    private VBox getRectangle(Day day) {
     	VBox rectangleBox = new VBox();
-    	rectangleBox.getChildren().add(new Text(String.valueOf(date)));
+    	rectangleBox.getChildren().add(new Text(String.valueOf(day.getDate().getDayOfMonth())));
 
     	Rectangle[] rectangles = new Rectangle[24];
     	
     	for (int i = 0; i < rectangles.length; i++) {
-    		rectangles[i] = new Rectangle(30, 5);
-    		rectangles[i].setFill(Color.BLUE);
-    		
-    		rectangleBox.getChildren().add(rectangles[i]);
+    		rectangles[i] = getColoredRectangle(i, day);
+
+			if (day.peekDayStatus().equals(DayStatus.WorkingDay) && (i == day.getStartWorkTime().getHour())) {
+				StackPane stackPane = new StackPane();
+				
+				Text text = new Text();
+				text.setText(String.valueOf(day.getStartWorkTime().getHour() + " : " + day.getStartWorkTime().getMinute()));
+				text.setStyle("-fx-font-size: 8;");
+				
+				stackPane.getChildren().addAll(rectangles[i], text);
+				rectangleBox.getChildren().add(stackPane);
+			} else if (day.peekDayStatus().equals(DayStatus.WorkingDay) && (i == day.getEndWorkTime().getHour())) {
+				StackPane stackPane = new StackPane();
+				
+				Text text = new Text();
+				text.setText(String.valueOf(day.getEndWorkTime().getHour() + " : " + day.getEndWorkTime().getMinute()));
+				text.setStyle("-fx-font-size: 8;");
+				
+				stackPane.getChildren().addAll(rectangles[i], text);
+				rectangleBox.getChildren().add(stackPane);
+			} else {
+				rectangleBox.getChildren().add(rectangles[i]);
+			}
+
     	}    	
     	return rectangleBox;
     }
+
+	private Rectangle getColoredRectangle(int hour, Day day) {
+		
+		Rectangle rectangle = new Rectangle(50, 8);
+
+		switch (day.peekDayStatus()) {
+			case NotSet:
+				rectangle.setFill(Color.BLACK);
+				break;
+			case WorkingDay:
+				if (day.getStartWorkTime().isBefore(day.getEndWorkTime()) && hour >= day.getStartWorkTime().getHour() && hour <= day.getEndWorkTime().getHour()) {
+					rectangle.setFill(Color.GREEN); 
+				} else if (day.getStartWorkTime().isAfter(day.getEndWorkTime()) && (hour >= day.getStartWorkTime().getHour() || hour <= day.getEndWorkTime().getHour())) {
+					rectangle.setFill(Color.GREEN);
+				} else {
+					rectangle.setFill(Color.GREY);
+				}
+				break;
+			case DayOff:
+				rectangle.setFill(Color.GRAY);
+				break;
+			case Vacation:
+				rectangle.setFill(Color.BISQUE);
+				break;
+			case SickLeave:
+				rectangle.setFill(Color.AQUA);
+				break;
+			case Absenteeism:
+				rectangle.setFill(Color.RED);
+				break;
+			default:
+				break;
+		}
+
+		return rectangle;
+	}
 
 	public String getNameOfSelectedTab() {
 		return mainTabPane.getSelectionModel().getSelectedItem().getText();

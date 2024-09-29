@@ -61,7 +61,7 @@ public class ScheduleObject {
 	public void setFiveToTwoSchedule(Day startDay) {
 		
 		for (Day day : dayLinkedList) {
-			if (day.getDate().isAfter(startDay.getDate())) {
+			if (day.getDate().isEqual(startDay.getDate()) || day.getDate().isAfter(startDay.getDate())) {				
 				day.setScheduleType(ScheduleType.FiveToTwo);
 				
 				if (day.getDate().getDayOfWeek().equals(DayOfWeek.SATURDAY) || day.getDate().getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
@@ -78,7 +78,7 @@ public class ScheduleObject {
 
 	public void setTwoToTwoSchedule(Day startDay, int numberOfDay) {
 		for (int i = 0; i < dayLinkedList.size(); i++) {
-			if (dayLinkedList.get(i).getDate().isAfter(startDay.getDate())) {
+			if (dayLinkedList.get(i).getDate().isEqual(startDay.getDate()) || dayLinkedList.get(i).getDate().isAfter(startDay.getDate())) {
 				dayLinkedList.get(i).setScheduleType(ScheduleType.TwoToTwo);
 				if (numberOfDay == 1 || numberOfDay == 2) {
 					dayLinkedList.get(i).pushDayStatus(DayStatus.WorkingDay);
@@ -98,7 +98,7 @@ public class ScheduleObject {
 
 	public void setFourToFourSchedule(Day startDay, int numberOfDay) {
 		for (int i = 0; i < dayLinkedList.size(); i++) {
-			if (dayLinkedList.get(i).getDate().isAfter(startDay.getDate())) {
+			if (dayLinkedList.get(i).getDate().isEqual(startDay.getDate()) || dayLinkedList.get(i).getDate().isAfter(startDay.getDate())) {
 				dayLinkedList.get(i).setScheduleType(ScheduleType.FourToFour);
 				if (numberOfDay == 1 || numberOfDay == 2) {
 					dayLinkedList.get(i).pushDayStatus(DayStatus.WorkingDay);
@@ -110,8 +110,8 @@ public class ScheduleObject {
 					numberOfDay++; 
 				} else if (numberOfDay == 5 || numberOfDay == 6) {
 					dayLinkedList.get(i).pushDayStatus(DayStatus.WorkingDay);
-					dayLinkedList.get(i).setStartWorkTime(LocalTime.of(8, 30));
-					dayLinkedList.get(i).setEndWorkTime(LocalTime.of(20, 30));
+					dayLinkedList.get(i).setStartWorkTime(LocalTime.of(20, 30));
+					dayLinkedList.get(i).setEndWorkTime(LocalTime.of(8, 30));
 					numberOfDay++;
 				} else if (numberOfDay == 7) {
 					dayLinkedList.get(i).pushDayStatus(DayStatus.DayOff);
