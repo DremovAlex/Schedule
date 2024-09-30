@@ -81,6 +81,13 @@ public class MainController {
 	@FXML
 	Button deleteWorkerButton;
 
+	@FXML
+	Button fiveToTwoButton;
+	@FXML
+	Button twoToTwoButton;
+	@FXML
+	Button FourToFourButton;
+
 	ContextMenu workerContextMenu;
 	ContextMenu monthContextMenu;
 	ContextMenu setScheduleContextMenu;
@@ -221,35 +228,17 @@ public class MainController {
 
 		setFiveToTwoMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
-				if (!selectedDay.getScheduleType().equals(ScheduleType.NotSet)) {
-					WindowHandler.getInstants().showErrorMessage("Расписание уже задано", "Нельзя указать расписание поверх уже существующего. Пожалуйста сначала удалите старое расписание.");
-					return;
-				}
-				tempWorker.getScheduleObject().setFiveToTwoSchedule(selectedDay);		
-				refreshScene();
-				tempWorker = null;
+				setFiveToTwoSchedule();
 			}
 		});
 		setTwoToTwoMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
-				if (!selectedDay.getScheduleType().equals(ScheduleType.NotSet)) {
-					WindowHandler.getInstants().showErrorMessage("Расписание уже задано", "Нельзя указать расписание поверх уже существующего. Пожалуйста сначала удалите старое расписание.");
-					return;
-				}
-				tempWorker.getScheduleObject().setTwoToTwoSchedule(selectedDay, 1);		
-				refreshScene();
-				tempWorker = null;
+				setTwoToTwoSchedule();
 			}
 		});
 		setFourToFourMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
-				if (!selectedDay.getScheduleType().equals(ScheduleType.NotSet)) {
-					WindowHandler.getInstants().showErrorMessage("Расписание уже задано", "Нельзя указать расписание поверх уже существующего. Пожалуйста сначала удалите старое расписание.");
-					return;
-				}
-				tempWorker.getScheduleObject().setFourToFourSchedule(selectedDay, 1);
-				refreshScene();
-				tempWorker = null;
+				setFourToFourSchedule();
 			}
 		});
 
@@ -312,6 +301,7 @@ public class MainController {
 				public void handle(MouseEvent mouseEvent) {
 					if (mouseEvent.isPrimaryButtonDown()) {
 						selectedDay = daysList.get(day);
+						tempWorker = worker;
 						refreshScene();
 					} else if (mouseEvent.isSecondaryButtonDown()) {
 						if (selectedDay != null && selectedDay.equals(daysList.get(day))) {
@@ -323,7 +313,7 @@ public class MainController {
 			});
 
 			if (daysList.get(i).equals(selectedDay)) {
-				rectangleBox.setStyle("-fx-border-width: 2pt; -fx-border-color: red");
+				rectangleBox.setStyle("-fx-border-width: 1pt; -fx-border-color: red");
 			}
 
 			hBox.getChildren().add(rectangleBox);
@@ -347,7 +337,7 @@ public class MainController {
 				
 				Text text = new Text();
 				text.setText(String.valueOf(day.getStartWorkTime().getHour() + " : " + day.getStartWorkTime().getMinute()));
-				text.setStyle("-fx-font-size: 8;");
+				text.setStyle("-fx-font-size: 9;");
 				
 				stackPane.getChildren().addAll(rectangles[i], text);
 				rectangleBox.getChildren().add(stackPane);
@@ -356,21 +346,29 @@ public class MainController {
 				
 				Text text = new Text();
 				text.setText(String.valueOf(day.getEndWorkTime().getHour() + " : " + day.getEndWorkTime().getMinute()));
-				text.setStyle("-fx-font-size: 8;");
+				text.setStyle("-fx-font-size: 9;");
 				
 				stackPane.getChildren().addAll(rectangles[i], text);
 				rectangleBox.getChildren().add(stackPane);
 			} else {
+				StackPane stackPane = new StackPane();
+				stackPane.getChildren().add(rectangles[i]);
 				rectangleBox.getChildren().add(rectangles[i]);
 			}
 
-    	}    	
+    	}
+		
+		Text startEndWorkText = new Text();
+		startEndWorkText.setText(String.valueOf(day.getStartWorkTime() + "\n" + day.getEndWorkTime()));
+
+		rectangleBox.getChildren().add(startEndWorkText);
+
     	return rectangleBox;
     }
 
 	private Rectangle getColoredRectangle(int hour, Day day) {
 		
-		Rectangle rectangle = new Rectangle(50, 8);
+		Rectangle rectangle = new Rectangle(70, 12);
 
 		switch (day.peekDayStatus()) {
 			case NotSet:
@@ -585,5 +583,36 @@ public class MainController {
 	private String getDayString(LocalDate date, Locale locale) {
 		DayOfWeek day = date.getDayOfWeek();
 		return day.getDisplayName(TextStyle.FULL, locale);
+	}
+
+	@FXML
+	public void setFiveToTwoSchedule() {
+		if (!selectedDay.getScheduleType().equals(ScheduleType.NotSet)) {
+			WindowHandler.getInstants().showErrorMessage("Расписание уже задано", "Нельзя указать расписание поверх уже существующего. Пожалуйста сначала удалите старое расписание.");
+			return;
+		}
+		tempWorker.getScheduleObject().setFiveToTwoSchedule(selectedDay);		
+		refreshScene();
+		tempWorker = null;
+	}
+	@FXML
+	public void setTwoToTwoSchedule() {
+		if (!selectedDay.getScheduleType().equals(ScheduleType.NotSet)) {
+			WindowHandler.getInstants().showErrorMessage("Расписание уже задано", "Нельзя указать расписание поверх уже существующего. Пожалуйста сначала удалите старое расписание.");
+			return;
+		}
+		tempWorker.getScheduleObject().setTwoToTwoSchedule(selectedDay, 1);		
+		refreshScene();
+		tempWorker = null;
+	}
+	@FXML
+	public void setFourToFourSchedule() {
+		if (!selectedDay.getScheduleType().equals(ScheduleType.NotSet)) {
+			WindowHandler.getInstants().showErrorMessage("Расписание уже задано", "Нельзя указать расписание поверх уже существующего. Пожалуйста сначала удалите старое расписание.");
+			return;
+		}
+		tempWorker.getScheduleObject().setFourToFourSchedule(selectedDay, 1);
+		refreshScene();
+		tempWorker = null;
 	}
 }

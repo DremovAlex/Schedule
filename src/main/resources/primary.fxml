@@ -35,9 +35,9 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button layoutX="33.0" layoutY="23.0" mnemonicParsing="false" />
-                        <Button layoutX="138.0" layoutY="23.0" mnemonicParsing="false" text="Button" />
-                        <Button layoutX="248.0" layoutY="23.0" mnemonicParsing="false" text="Button" />
+                        <Button fx:id="fiveToTwoButton" layoutX="33.0" layoutY="23.0" mnemonicParsing="false" onAction="#setFiveToTwoSchedule" text="Указать 5/2" />
+                        <Button fx:id="twoTOTwoButton" layoutX="138.0" layoutY="23.0" mnemonicParsing="false" onAction="#setTwoToTwoSchedule" text="Указать 2/2 без ночей" />
+                        <Button fx:id="fourToFourButton" layoutX="338.0" layoutY="23.0" mnemonicParsing="false" onAction="#setFourToFourSchedule" text="Указать 2/2 с ночами" />
                      </children></AnchorPane>
               </content>
             </Tab>
