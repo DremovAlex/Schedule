@@ -146,4 +146,114 @@ public class ScheduleObject {
 	public void setDayLinkedList(List<Day> dayLinkedList) {
 		this.dayLinkedList = dayLinkedList;
 	}
+
+	public void deleteSchedule(Day startDay) {
+		for (Day day : dayLinkedList) {
+			if (day.getDate().isEqual(startDay.getDate()) || day.getDate().isAfter(startDay.getDate())) {
+				day.setScheduleType(ScheduleType.NotSet);
+				day.pushDayStatus(DayStatus.NotSet);
+				day.setStartWorkTime(null);
+				day.setEndWorkTime(null);
+			}
+		}
+	}
+
+	public void addWorkingDays(Day startDay, int days) {
+		switch (startDay.getScheduleType()) {
+			case FiveToTwo:
+				for (Day day : dayLinkedList) {
+					if ((day.getDate().isEqual(startDay.getDate()) || day.getDate().isAfter(startDay.getDate())) && 
+							days != 0) {
+						day.pushDayStatus(DayStatus.WorkingDay);
+						day.setStartWorkTime(LocalTime.of(8, 30));
+						day.setEndWorkTime(LocalTime.of(17, 30));
+						days--;
+					}
+				}
+				break;
+			case TwoToTwo:
+				for (Day day : dayLinkedList) {
+					if ((day.getDate().isEqual(startDay.getDate()) || day.getDate().isAfter(startDay.getDate())) && 
+							days != 0) {
+						day.pushDayStatus(DayStatus.WorkingDay);
+						day.setStartWorkTime(LocalTime.of(8, 30));
+						day.setEndWorkTime(LocalTime.of(20, 30));
+						days--;
+					}
+				}
+				break;
+			default:
+				for (Day day : dayLinkedList) {
+					if ((day.getDate().isEqual(startDay.getDate()) || day.getDate().isAfter(startDay.getDate())) && 
+							days != 0) {
+						day.pushDayStatus(DayStatus.WorkingDay);
+						day.setStartWorkTime(LocalTime.of(8, 30));
+						day.setEndWorkTime(LocalTime.of(20, 30));
+						days--;
+					}
+				}
+				break;
+		}
+	}
+
+	public void addDayOffDays(Day startDay, int days) {
+		for (Day day : dayLinkedList) {
+			if ((day.getDate().isEqual(startDay.getDate()) || day.getDate().isAfter(startDay.getDate())) && 
+					days != 0) {
+				day.pushDayStatus(DayStatus.DayOff);
+				days--;
+			}
+		}
+	}
+
+	public void addVacationDays(Day startDay, int days) {
+		for (Day day : dayLinkedList) {
+			if ((day.getDate().isEqual(startDay.getDate()) || day.getDate().isAfter(startDay.getDate())) && 
+					days != 0) {
+				day.pushDayStatus(DayStatus.Vacation);
+				days--;
+			}
+		}
+	}
+
+	public void addSickLeaveDays(Day startDay, int days) {
+		for (Day day : dayLinkedList) {
+			if ((day.getDate().isEqual(startDay.getDate()) || day.getDate().isAfter(startDay.getDate())) && 
+					days != 0) {
+				day.pushDayStatus(DayStatus.SickLeave);
+				days--;
+			}
+		}
+	}
+
+	public void addAbsenteeismDays(Day startDay, int days) {
+		for (Day day : dayLinkedList) {
+			if ((day.getDate().isEqual(startDay.getDate()) || day.getDate().isAfter(startDay.getDate())) && 
+					days != 0) {
+				day.pushDayStatus(DayStatus.Absenteeism);
+				days--;
+			}
+		}
+	}
+
+	public void cancelChangeDays(Day startDay, int days) {
+		for (Day day : dayLinkedList) {
+			if ((day.getDate().isEqual(startDay.getDate()) || day.getDate().isAfter(startDay.getDate())) && 
+					days != 0) {
+				day.popDayStatus();
+				days--;
+			}
+		}
+	}
+
+	public void changeSingleDay(Day tempDay) {
+		for (Day day : dayLinkedList) {
+			if (day.getDate().isEqual(tempDay.getDate())) {
+				day.pushDayStatus(tempDay.peekDayStatus());
+				day.setStartWorkTime(tempDay.getStartWorkTime());
+				day.setEndWorkTime(tempDay.getEndWorkTime());
+				break;
+			}
+		}
+	}
 }

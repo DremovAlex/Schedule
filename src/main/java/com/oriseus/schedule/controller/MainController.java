@@ -15,11 +15,14 @@ import com.oriseus.schedule.model.Worker;
 import com.oriseus.schedule.model.WorkingPlace;
 import com.oriseus.schedule.utils.WindowHandler;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -82,11 +85,24 @@ public class MainController {
 	Button deleteWorkerButton;
 
 	@FXML
-	Button fiveToTwoButton;
+	Button deleteScheduleFromCurrentButton;
 	@FXML
-	Button twoToTwoButton;
+	Button deleteScheduleButton;
+
 	@FXML
-	Button FourToFourButton;
+	ChoiceBox<String> addScheduleChoiceBox;
+	@FXML
+	Button confirmAddScheduleButton;
+
+	@FXML
+	ChoiceBox<String> deleteScheduleChoiceBox;
+	@FXML
+	Button confirmDeleteScheduleButton;
+
+	@FXML
+	ChoiceBox<String> dayStatusChoiceBox;
+	@FXML
+	Button dayStatusButton;
 
 	ContextMenu workerContextMenu;
 	ContextMenu monthContextMenu;
@@ -94,9 +110,25 @@ public class MainController {
 
 	public static String currentTabName; 
 	public static Worker tempWorker;
+	public static int dayCounter;
+	public static Day technicalDay;
 
     @FXML
     public void initialize() {
+
+		addScheduleChoiceBox.getItems().addAll("Пять - два", 
+															"Два - два без ночных смен", 
+															"Два - два с ночными сменами");
+
+		deleteScheduleChoiceBox.getItems().addAll("Удалить расписание с текущего дня",
+																"Удалить расписание полностью");
+
+		dayStatusChoiceBox.getItems().addAll("Выходной день",
+														 "Рабочий день",
+														 "Больничный",
+														 "Отпуск",
+														 "Прогул",
+														 "Удалить изменения дня");
 
 		month = LocalDate.now().getMonthValue();
 		year = LocalDate.now().getYear();
@@ -321,7 +353,7 @@ public class MainController {
 
     	return hBox;
     }
-    
+ /*   
 	//Возвращает vbox состоящий из 24 квадратов, илюстрирующих часы дня
     private VBox getRectangle(Day day) {
     	VBox rectangleBox = new VBox();
@@ -366,7 +398,7 @@ public class MainController {
     	return rectangleBox;
     }
 
-	private Rectangle getColoredRectangle(int hour, Day day) {
+ 	private Rectangle getColoredRectangle(int hour, Day day) {
 		
 		Rectangle rectangle = new Rectangle(70, 12);
 
@@ -400,6 +432,124 @@ public class MainController {
 		}
 
 		return rectangle;
+	}
+*/
+	private VBox getRectangle(Day day) {
+
+		VBox rectangleBox = new VBox();
+		Rectangle[] rectangle = new Rectangle[2];
+		StackPane stackPane = null;
+		Text text = null;
+
+		rectangleBox.getChildren().add(new Text(String.valueOf(day.getDate().getDayOfMonth() + " " +
+																day.getDate().getDayOfWeek())));
+
+		for (int i = 0; i < rectangle.length; i++) {
+			stackPane = new StackPane();
+			
+			if (day.peekDayStatus().equals(DayStatus.WorkingDay)) {
+				
+				if (i == 0 && day.getStartWorkTime().isBefore(day.getEndWorkTime())) {
+					rectangle[i] = getColoredRectangle(day, 100, 50);
+					
+					text = new Text();
+					text.setStyle("-fx-font-size: 28;");
+					text.setText(String.valueOf(day.getStartWorkTime().getHour() + ":" + 
+												day.getStartWorkTime().getMinute()));
+					stackPane.getChildren().addAll(rectangle[i], text);
+					
+					rectangleBox.getChildren().add(stackPane);		
+				} else if (i == 1 && day.getStartWorkTime().isBefore(day.getEndWorkTime())) {
+					rectangle[i] = getColoredRectangle(day, 100, 50);
+					
+					text = new Text();
+					text.setStyle("-fx-font-size: 28;");
+					text.setText(String.valueOf(day.getEndWorkTime().getHour() + ":" + 
+												day.getEndWorkTime().getMinute()));
+					stackPane.getChildren().addAll(rectangle[i], text);
+					
+					rectangleBox.getChildren().add(stackPane);
+				} else if (i == 0 && day.getStartWorkTime().isAfter(day.getEndWorkTime())) {
+					rectangle[i] = getColoredRectangle(day, 100, 50);
+					
+					text = new Text();
+					text.setStyle("-fx-font-size: 28;");
+					text.setText(String.valueOf(day.getStartWorkTime().getHour() + ":" + 
+												day.getStartWorkTime().getMinute()));
+					stackPane.getChildren().addAll(rectangle[i], text);
+					
+					rectangleBox.getChildren().add(stackPane);		
+				} else if (i == 1 && day.getStartWorkTime().isAfter(day.getEndWorkTime())) {
+					rectangle[i] = getColoredRectangle(day, 100, 50);
+					
+					text = new Text();
+					text.setStyle("-fx-font-size: 28;");
+					text.setText(String.valueOf(day.getEndWorkTime().getHour() + ":" + 
+												day.getEndWorkTime().getMinute()));
+					stackPane.getChildren().addAll(rectangle[i], text);
+					
+					rectangleBox.getChildren().add(stackPane);
+				}
+
+			} else {
+				Text dayStatusText = new Text();
+				dayStatusText.setText(getDayStatusString(day));
+				dayStatusText.setRotate(45);
+
+				stackPane.getChildren().addAll(getColoredRectangle(day, 100, 100), dayStatusText);
+				rectangleBox.getChildren().add(stackPane);
+				break;
+			}
+
+		}
+		return rectangleBox;
+	}
+
+	private Rectangle getColoredRectangle(Day day, int width, int height) {
+
+		Rectangle rectangle = new Rectangle(width, height);
+
+		switch (day.peekDayStatus()) {
+			case NotSet:
+				rectangle.setFill(Color.BLACK);
+				break;
+			case WorkingDay:
+				rectangle.setFill(Color.GREEN);
+				break;
+			case DayOff:
+				rectangle.setFill(Color.GREY);
+				break;
+			case SickLeave:
+				rectangle.setFill(Color.AQUA);
+				break;
+			case Vacation:
+				rectangle.setFill(Color.BEIGE);
+				break;
+			case Absenteeism:
+				rectangle.setFill(Color.RED);
+				break; 
+			default:
+				break;
+		}
+
+		return rectangle;
+	}
+
+	private String getDayStatusString(Day day) {
+		switch (day.peekDayStatus()) {
+			case NotSet:
+				return "Не указано";
+			case DayOff:
+				return "Выходной";
+			case Vacation:
+				return "Отпуск";
+			case SickLeave:
+				return "Больничный";
+			case Absenteeism:
+				return "Прогул";
+			default:
+				return "";
+		}
 	}
 
 	public String getNameOfSelectedTab() {
@@ -593,7 +743,6 @@ public class MainController {
 		}
 		tempWorker.getScheduleObject().setFiveToTwoSchedule(selectedDay);		
 		refreshScene();
-		tempWorker = null;
 	}
 	@FXML
 	public void setTwoToTwoSchedule() {
@@ -603,7 +752,6 @@ public class MainController {
 		}
 		tempWorker.getScheduleObject().setTwoToTwoSchedule(selectedDay, 1);		
 		refreshScene();
-		tempWorker = null;
 	}
 	@FXML
 	public void setFourToFourSchedule() {
@@ -613,6 +761,173 @@ public class MainController {
 		}
 		tempWorker.getScheduleObject().setFourToFourSchedule(selectedDay, 1);
 		refreshScene();
+	}
+
+/* 	@FXML
+	public void deleteScheduleFromCurrent() {
+		tempWorker.getScheduleObject().deleteSchedule(selectedDay);
+		refreshScene();
+	}
+	@FXML
+	public void deleteScheduleq() {
+		tempWorker.getScheduleObject().deleteSchedule(new Day(LocalDate.of(2020, 1, 1)));
+		refreshScene();
+	}
+*/
+	@FXML
+	public void addScheduleFromChoiceBox() {
+		switch (addScheduleChoiceBox.getValue()) {
+			case "Пять - два":
+				setFiveToTwoSchedule();
+				break;
+			case "Два - два без ночных смен":
+				setTwoToTwoSchedule();
+				break;
+			case "Два - два с ночными сменами":
+				setFourToFourSchedule();
+				break;
+			default:
+				break;
+		}
+	}
+
+	@FXML
+	public void deleteSchedule() {
+		switch (deleteScheduleChoiceBox.getValue()) {
+			case "Удалить расписание с текущего дня":
+				tempWorker.getScheduleObject().deleteSchedule(selectedDay);
+				refreshScene();
+				break;
+			case "Удалить расписание полностью" :
+				tempWorker.getScheduleObject().deleteSchedule(new Day(LocalDate.of(2020, 1, 1)));
+				refreshScene();
+				break;
+			default:
+				break;
+		}
+	}
+
+	@FXML
+	public void changeDayStatus() {
+		switch (dayStatusChoiceBox.getValue()) {
+			case "Рабочий день":
+			try {
+				WindowHandler.getInstants().openModalWindow("Добавление рабочих дней", 
+								"changeDayStatus", 600, 300);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			tempWorker.getScheduleObject().addWorkingDays(selectedDay, dayCounter);
+			refreshScene();
+			
+			tempWorker = null;
+			selectedDay = null;
+			dayCounter = 0;
+			break;
+			case "Выходной день":
+				try {
+					WindowHandler.getInstants().openModalWindow("Добавление выходных дней", 
+									"changeDayStatus", 600, 300);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				tempWorker.getScheduleObject().addDayOffDays(selectedDay, dayCounter);
+				refreshScene();
+				
+				tempWorker = null;
+				selectedDay = null;
+				dayCounter = 0;
+				break;
+			case "Больничный":
+				try {
+					WindowHandler.getInstants().openModalWindow("Добавление больничного", 
+									"changeDayStatus", 600, 300);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				tempWorker.getScheduleObject().addSickLeaveDays(selectedDay, dayCounter);
+				refreshScene();
+				
+				tempWorker = null;
+				selectedDay = null;
+				dayCounter = 0;
+				break;
+			case "Отпуск":
+				try {
+					WindowHandler.getInstants().openModalWindow("Добавление отпуска", 
+									"changeDayStatus", 600, 300);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				tempWorker.getScheduleObject().addVacationDays(selectedDay, dayCounter);
+				refreshScene();
+				
+				tempWorker = null;
+				selectedDay = null;
+				dayCounter = 0;
+				break;
+			case "Прогул":
+				try {
+					WindowHandler.getInstants().openModalWindow("Добавление прогулов", 
+									"changeDayStatus", 600, 300);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				tempWorker.getScheduleObject().addAbsenteeismDays(selectedDay, dayCounter);
+				refreshScene();
+				
+				tempWorker = null;
+				selectedDay = null;
+				dayCounter = 0;
+				break;
+			case "Удалить изменения дня":
+				try {
+					WindowHandler.getInstants().openModalWindow("Удалить изменения дня", 
+									"changeDayStatus", 600, 300);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				tempWorker.getScheduleObject().cancelChangeDays(selectedDay, dayCounter);
+				refreshScene();
+				
+				tempWorker = null;
+				selectedDay = null;
+				dayCounter = 0;
+				break;
+			default:
+				break;
+		}
+	}
+
+	@FXML
+	public void changeSingleDay() {
+		technicalDay = new Day(selectedDay.getDate());
+		technicalDay.setScheduleType(selectedDay.getScheduleType());
+		technicalDay.pushDayStatus(selectedDay.peekDayStatus());
+		technicalDay.setStartWorkTime(selectedDay.getStartWorkTime());
+		technicalDay.setEndWorkTime(selectedDay.getEndWorkTime());
+
+		try {
+			WindowHandler.getInstants().openModalWindow("Изменение отдельного дня", 
+							"changeSingleDay", 600, 300);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		tempWorker.getScheduleObject().changeSingleDay(technicalDay);
+
+		refreshScene();
+
 		tempWorker = null;
+		selectedDay = null;
+		technicalDay = null;
+		dayCounter = 0;
+
 	}
 }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="351.0" prefWidth="515.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oriseus.schedule.controller.ChangeSingleDayController">
+   <children>
+      <Button fx:id="cancelButton" layoutX="386.0" layoutY="308.0" mnemonicParsing="false" onAction="#cancelButtonClick" prefHeight="30.0" prefWidth="100.0" text="cancel" textAlignment="CENTER">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+      <Button fx:id="okButton" layoutX="32.0" layoutY="308.0" mnemonicParsing="false" onAction="#okButtonClick" prefHeight="30.0" prefWidth="100.0" text="ok" textAlignment="CENTER">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+      <Text layoutX="139.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Редактирование дня" textAlignment="CENTER" wrappingWidth="236.1986083984375">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Text>
+      <ChoiceBox fx:id="dayStatusChoiceBox" layoutX="182.0" layoutY="119.0" prefWidth="150.0" />
+      <Text layoutX="228.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Статус дня" />
+      <Text layoutX="56.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Время начала" />
+      <Text layoutX="323.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Минуты" />
+      <Text layoutX="345.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Время окончания" />
+      <Text layoutX="24.0" layoutY="267.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Минуты" />
+      <Text layoutX="32.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Часы" />
+      <Text layoutX="331.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Часы" />
+      <ChoiceBox fx:id="startDayHourChoiceBox" layoutX="97.0" layoutY="201.0" prefHeight="25.0" prefWidth="69.0" />
+      <ChoiceBox fx:id="startDayMinutesChoiceBox" layoutX="97.0" layoutY="249.0" prefHeight="25.0" prefWidth="69.0" />
+      <ChoiceBox fx:id="endDayHourChoiceBox" layoutX="401.0" layoutY="201.0" prefHeight="25.0" prefWidth="69.0" />
+      <ChoiceBox fx:id="endDayMinutesChoiceBox" layoutX="401.0" layoutY="248.0" prefHeight="25.0" prefWidth="69.0" />
+   </children>
+</AnchorPane>
