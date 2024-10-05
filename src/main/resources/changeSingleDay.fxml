@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -21,17 +22,21 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Text>
-      <ChoiceBox fx:id="dayStatusChoiceBox" layoutX="182.0" layoutY="119.0" prefWidth="150.0" />
-      <Text layoutX="228.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Статус дня" />
-      <Text layoutX="56.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Время начала" />
-      <Text layoutX="323.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Минуты" />
-      <Text layoutX="345.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Время окончания" />
-      <Text layoutX="24.0" layoutY="267.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Минуты" />
-      <Text layoutX="32.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Часы" />
-      <Text layoutX="331.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Часы" />
-      <ChoiceBox fx:id="startDayHourChoiceBox" layoutX="97.0" layoutY="201.0" prefHeight="25.0" prefWidth="69.0" />
-      <ChoiceBox fx:id="startDayMinutesChoiceBox" layoutX="97.0" layoutY="249.0" prefHeight="25.0" prefWidth="69.0" />
-      <ChoiceBox fx:id="endDayHourChoiceBox" layoutX="401.0" layoutY="201.0" prefHeight="25.0" prefWidth="69.0" />
-      <ChoiceBox fx:id="endDayMinutesChoiceBox" layoutX="401.0" layoutY="248.0" prefHeight="25.0" prefWidth="69.0" />
+      <ChoiceBox fx:id="dayStatusChoiceBox" layoutX="183.0" layoutY="81.0" prefWidth="150.0" />
+      <Text layoutX="228.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Статус дня" />
+      <Text layoutX="55.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Время начала" />
+      <Text layoutX="375.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Время окончания" />
+      <TextField fx:id="startWorkHourTextField" layoutX="55.0" layoutY="203.0" prefHeight="25.0" prefWidth="36.0" />
+      <TextField fx:id="startWorkMinuteTextField" layoutX="93.0" layoutY="203.0" prefHeight="25.0" prefWidth="36.0" />
+      <Button fx:id="startWorkHourUpButton" layoutX="54.0" layoutY="169.0" mnemonicParsing="false" onAction="#startWorkHourUpButtonClick" prefHeight="25.0" prefWidth="36.0" text="^" />
+      <Button fx:id="startWorkMinuteUpButton" layoutX="93.0" layoutY="169.0" mnemonicParsing="false" onAction="#startWorkMinuteUpButtonClick" prefHeight="25.0" prefWidth="36.0" text="^" />
+      <Button fx:id="startWorkHourDownButton" layoutX="56.0" layoutY="236.0" mnemonicParsing="false" onAction="#startWorkHourDownButtonClick" prefHeight="25.0" prefWidth="36.0" text="v" />
+      <Button fx:id="startWorkMinuteDownButton" layoutX="94.0" layoutY="236.0" mnemonicParsing="false" onAction="#startWorkMinuteDownButtonClick" prefHeight="25.0" prefWidth="36.0" text="v" />
+      <TextField fx:id="endWorkHourTextField" layoutX="399.0" layoutY="204.0" prefHeight="25.0" prefWidth="36.0" />
+      <TextField fx:id="endWorkMinuteTextField" layoutX="437.0" layoutY="204.0" prefHeight="25.0" prefWidth="36.0" />
+      <Button fx:id="endWorkHourUpButton" layoutX="398.0" layoutY="170.0" mnemonicParsing="false" onAction="#endWorkHourUpButtonClick" prefHeight="25.0" prefWidth="36.0" text="^" />
+      <Button fx:id="endWorkMinuteUpButton" layoutX="437.0" layoutY="170.0" mnemonicParsing="false" onAction="#endWorkMinuteUpButtonClick" prefHeight="25.0" prefWidth="36.0" text="^" />
+      <Button fx:id="endWorkHourDownButton" layoutX="400.0" layoutY="237.0" mnemonicParsing="false" onAction="#endWorkHourDownButtonClick" prefHeight="25.0" prefWidth="36.0" text="v" />
+      <Button fx:id="endWorkMinuteDownButton" layoutX="438.0" layoutY="237.0" mnemonicParsing="false" onAction="#endWorkMinuteDownButtonClick" prefHeight="25.0" prefWidth="36.0" text="v" />
    </children>
 </AnchorPane>

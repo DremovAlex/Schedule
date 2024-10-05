@@ -15,8 +15,6 @@ import com.oriseus.schedule.model.Worker;
 import com.oriseus.schedule.model.WorkingPlace;
 import com.oriseus.schedule.utils.WindowHandler;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -924,8 +922,6 @@ public class MainController {
 
 		refreshScene();
 
-		tempWorker = null;
-		selectedDay = null;
 		technicalDay = null;
 		dayCounter = 0;
 

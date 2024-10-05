@@ -1,8 +1,5 @@
 package com.oriseus.schedule.controller;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 import com.oriseus.schedule.model.Day;
 import com.oriseus.schedule.model.DayStatus;
 import com.oriseus.schedule.utils.WindowHandler;
@@ -10,20 +7,43 @@ import com.oriseus.schedule.utils.WindowHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
+import java.time.LocalTime;
+
 
 public class ChangeSingleDayController {
 
     @FXML
     ChoiceBox<String> dayStatusChoiceBox;
+
     @FXML
-    ChoiceBox<Integer> startDayHourChoiceBox;
+    Button startWorkHourUpButton;
     @FXML
-    ChoiceBox<Integer> startDayMinutesChoiceBox;
+    Button startWorkMinuteUpButton;
     @FXML
-    ChoiceBox<Integer> endDayHourChoiceBox;
+    Button startWorkHourDownButton;
     @FXML
-    ChoiceBox<Integer> endDayMinutesChoiceBox;
+    Button startWorkMinuteDownButton;
+
+    @FXML
+    Button endWorkHourUpButton;
+    @FXML
+    Button endWorkMinuteUpButton;
+    @FXML
+    Button endWorkHourDownButton;
+    @FXML
+    Button endWorkMinuteDownButton;
+
+    @FXML
+    TextField startWorkHourTextField;
+    @FXML
+    TextField startWorkMinuteTextField;
+    @FXML
+    TextField endWorkHourTextField;
+    @FXML
+    TextField endWorkMinuteTextField;
 
     @FXML
     Button okButton;
@@ -32,26 +52,39 @@ public class ChangeSingleDayController {
 
     private Day tempDay;
 
+    private int startDayHour;
+    private int startDayMinute;
+    private int endDayHour;
+    private int endDayMinute;
+
+    private String[] dayStatusStrings = {"Не установлено", "Выходной день", "Рабочий день", "Больничный", "Отпуск", "Прогул"};
+
     @FXML
     public void initialize() {
-		dayStatusChoiceBox.getItems().addAll("Выходной день",
-														 "Рабочий день",
-														 "Больничный",
-														 "Отпуск",
-														 "Прогул");
+		dayStatusChoiceBox.getItems().addAll(dayStatusStrings);
 
-        fillChoiceBoxes();
-    }
-
-    private void fillChoiceBoxes() {
-        for (int i = 0; i < 24; i++) {
-            startDayHourChoiceBox.getItems().add(i);
-            endDayHourChoiceBox.getItems().add(i);
+        dayStatusChoiceBox.setValue(dayStatusStrings[getIntexDayStatus(MainController.technicalDay.peekDayStatus())]);
+        
+        if (MainController.technicalDay.peekDayStatus().equals(DayStatus.WorkingDay)) {
+            startDayHour = MainController.technicalDay.getStartWorkTime().getHour();
+            startDayMinute = MainController.technicalDay.getStartWorkTime().getMinute();
+            endDayHour = MainController.technicalDay.getEndWorkTime().getHour();
+            endDayMinute = MainController.technicalDay.getEndWorkTime().getMinute();
         }
 
-        for (int i = 0; i < 60; i += 10) {
-            startDayMinutesChoiceBox.getItems().add(i);
-            endDayMinutesChoiceBox.getItems().add(i);
+        setTextToTextFields();
+    }
+
+    private int getIntexDayStatus(DayStatus dayStatus) {
+        switch (dayStatus) {
+            case NotSet: return 0;
+            case DayOff: return 1;
+            case WorkingDay: return 2;
+            case SickLeave: return 3;
+            case Vacation: return 4;
+            case Absenteeism: return 5;
+            default:
+                return 0;
         }
     }
 
@@ -72,24 +105,173 @@ public class ChangeSingleDayController {
         }
     }
 
+    private void getValuesFromTextFields() {
+        if (tryToConvertStringToInteger(startWorkHourTextField.getText())) {
+            startDayHour = Integer.parseInt(startWorkHourTextField.getText());
+            checkHour(startDayHour);
+        } else {
+            WindowHandler.getInstants().showErrorMessage("Ошибка данных", "Вы ввели не коректные данные.");
+            return;
+        }
+        if (tryToConvertStringToInteger(startWorkMinuteTextField.getText())) {
+            startDayMinute = Integer.parseInt(startWorkMinuteTextField.getText()); 
+            checkMinute(startDayMinute);
+        } else {
+            WindowHandler.getInstants().showErrorMessage("Ошибка данных", "Вы ввели не коректные данные.");
+            return;
+        }
+        if (tryToConvertStringToInteger(endWorkHourTextField.getText())) {
+            endDayHour = Integer.parseInt(endWorkHourTextField.getText());
+            checkHour(endDayHour);
+        } else {
+            WindowHandler.getInstants().showErrorMessage("Ошибка данных", "Вы ввели не коректные данные.");
+            return;
+        }
+        if (tryToConvertStringToInteger(endWorkMinuteTextField.getText())) {
+            endDayMinute = Integer.parseInt(endWorkMinuteTextField.getText());
+            checkMinute(endDayMinute);
+        } else {
+            WindowHandler.getInstants().showErrorMessage("Ошибка данных", "Вы ввели не коректные данные.");
+            return;
+        }
+    }
+
+    private void setTextToTextFields() {
+        startWorkHourTextField.setText(String.valueOf(startDayHour));
+        startWorkMinuteTextField.setText(String.valueOf(startDayMinute));
+        endWorkHourTextField.setText(String.valueOf(endDayHour));
+        endWorkMinuteTextField.setText(String.valueOf(endDayMinute));
+    }
+
+    private boolean tryToConvertStringToInteger(String value) {    
+        try {
+            Integer.parseInt(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private void checkHour(int hour) {
+        if (hour < 0 || hour > 23) {
+            WindowHandler.getInstants().showErrorMessage("Ошибка данных", "Вы ввели не коректные данные.");
+            return;
+        }
+    }
+
+    private void checkMinute(int minute) {
+        if (minute < 0 || minute > 59) {
+            WindowHandler.getInstants().showErrorMessage("Ошибка данных", "Вы ввели не коректные данные.");
+            return;
+        }
+    }
+
+    @FXML
+    public void startWorkHourUpButtonClick() {
+        getValuesFromTextFields();
+        
+        if (startDayHour < 23) 
+            startDayHour++;
+        
+        setTextToTextFields();
+    }
+
+    @FXML
+    public void startWorkMinuteUpButtonClick() {
+        getValuesFromTextFields();
+        
+        if (startDayMinute < 59) {
+            startDayMinute++;
+        } else if (startDayMinute == 59 && startDayHour < 23) {
+            startDayHour++;
+            startDayMinute = 0;
+        }
+
+        setTextToTextFields();
+    }
+
+    @FXML
+    public void startWorkHourDownButtonClick() {
+        getValuesFromTextFields();
+        
+        if (startDayHour > 0) 
+            startDayHour--;
+
+        setTextToTextFields();
+    }
+
+    @FXML
+    public void startWorkMinuteDownButtonClick() {
+        getValuesFromTextFields();
+
+        if (startDayMinute > 0) {
+            startDayMinute--;
+        } else if (startDayMinute == 0 && startDayHour > 0) {
+            startDayHour--;
+            startDayMinute = 59;
+        }
+
+        setTextToTextFields();
+    }
+
+    @FXML
+    public void endWorkHourUpButtonClick() {
+        getValuesFromTextFields();
+        
+        if (endDayHour < 23) 
+            endDayHour++;
+        
+        setTextToTextFields();
+    }
+
+    @FXML
+    public void endWorkMinuteUpButtonClick() {
+        getValuesFromTextFields();
+        
+        if (endDayMinute < 59) {
+            endDayMinute++;
+        } else if (endDayMinute == 59 && endDayHour < 23) {
+            endDayHour++;
+            endDayMinute = 0;
+        }
+
+        setTextToTextFields();
+    }
+
+    @FXML
+    public void endWorkHourDownButtonClick() {
+        getValuesFromTextFields();
+        
+        if (endDayHour > 0) 
+            endDayHour--;
+
+        setTextToTextFields();
+    }
+
+    @FXML
+    public void endWorkMinuteDownButtonClick() {
+        getValuesFromTextFields();
+
+        if (endDayMinute > 0) {
+            endDayMinute--;
+        } else if (endDayMinute == 0 && endDayHour > 0) {
+            endDayHour--;
+            endDayMinute = 59;
+        }
+
+        setTextToTextFields();
+    }
+
     @FXML
     public void okButtonClick() {
-
-        if (dayStatusChoiceBox.getValue() == null ||
-            startDayHourChoiceBox.getValue() == null ||
-            startDayMinutesChoiceBox.getValue() == null ||
-            endDayHourChoiceBox.getValue() == null ||
-            endDayMinutesChoiceBox.getValue() == null) {
-                WindowHandler.getInstants().showErrorMessage("Не заполнены поля",
-                     "Пожалуйста, заполните все значения для изменения дня.");
-                     return;
-            }
-
-        MainController.technicalDay.pushDayStatus(convertStringValueToDayStatus(dayStatusChoiceBox.getValue()));
-        MainController.technicalDay.setStartWorkTime(LocalTime.of(startDayHourChoiceBox.getValue(),
-                                                                startDayMinutesChoiceBox.getValue()));
-        MainController.technicalDay.setEndWorkTime(LocalTime.of(endDayHourChoiceBox.getValue(),
-                                                                endDayMinutesChoiceBox.getValue()));
+        if (dayStatusChoiceBox.getValue().equals(dayStatusStrings[2])) {
+            getValuesFromTextFields();
+            MainController.technicalDay.pushDayStatus(convertStringValueToDayStatus(dayStatusChoiceBox.getValue()));
+            MainController.technicalDay.setStartWorkTime(LocalTime.of(startDayHour, startDayMinute));
+            MainController.technicalDay.setEndWorkTime(LocalTime.of(endDayHour, endDayMinute));
+        } else {
+            MainController.technicalDay.pushDayStatus(convertStringValueToDayStatus(dayStatusChoiceBox.getValue()));
+        }
 
         Stage stage = (Stage) okButton.getScene().getWindow();
 		stage.close();
