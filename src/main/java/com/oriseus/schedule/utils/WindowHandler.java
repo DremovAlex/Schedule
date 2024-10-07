@@ -1,12 +1,14 @@
 package com.oriseus.schedule.utils;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 public class WindowHandler {
@@ -38,6 +40,17 @@ public class WindowHandler {
 		alertMessage.setHeaderText(header);
 		alertMessage.setContentText(content);
 		alertMessage.showAndWait();
+	}
+
+	public Optional<ButtonType> openChoiceDialog(String title, String header, String content) {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(content);
+
+		Optional<ButtonType> result = alert.showAndWait();
+
+		return result;
 	}
 	
 }

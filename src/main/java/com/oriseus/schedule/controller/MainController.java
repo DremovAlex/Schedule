@@ -1,9 +1,11 @@
 package com.oriseus.schedule.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Locale;
+import java.util.Optional;
 import java.time.format.TextStyle;
 import java.util.List;
 
@@ -20,6 +22,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
@@ -34,6 +37,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class MainController {
 
@@ -101,6 +107,15 @@ public class MainController {
 	ChoiceBox<String> dayStatusChoiceBox;
 	@FXML
 	Button dayStatusButton;
+
+	@FXML
+	Button saveButton;
+	@FXML
+	Button loadButton;
+	@FXML
+	Button choiceButton;
+	@FXML
+	Button createButton;
 
 	ContextMenu workerContextMenu;
 	ContextMenu monthContextMenu;
@@ -925,5 +940,58 @@ public class MainController {
 		technicalDay = null;
 		dayCounter = 0;
 
+	}
+
+	@FXML
+	public void saveFile() {
+		Optional<ButtonType> optional = WindowHandler.getInstants().openChoiceDialog("Подтверждение действий.", "Подтверждение действий.", "Вы уверены что хотите сохранить состояние программы?");
+
+		if (optional.get().equals(ButtonType.OK)) {
+			Company.getInstants().save();
+		}
+	}
+	@FXML
+	public void loadFile() {
+		Optional<ButtonType> optional = WindowHandler.getInstants().openChoiceDialog("Подтверждение действий.", "Подтверждение действий.", "Вы уверены что хотите загрузить состояние программы?");
+
+		if (optional.get().equals(ButtonType.OK)) {
+			Company.getInstants().load();
+		}
+	}
+	@FXML
+	public void choiceFile() {
+
+		Optional<ButtonType> optional = WindowHandler.getInstants().openChoiceDialog("Подтверждение действий.", "Подтверждение действий.", "Вы уверены что хотите выбрать файл для сохранения?");
+
+		if (optional.get().equals(ButtonType.OK)) {
+			FileChooser fileChooser = new FileChooser();
+			File selectedFile = fileChooser.showOpenDialog((Stage) choiceButton.getScene().getWindow());
+			if (selectedFile != null) {
+				try {
+					Company.getInstants().choice(selectedFile);
+				} catch (IOException e) {
+					WindowHandler.getInstants().showErrorMessage("Произошла ошибка создания файла!", e.getMessage());
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	@FXML
+	public void createFile() {
+		Optional<ButtonType> optional = WindowHandler.getInstants().openChoiceDialog("Подтверждение действий.", "Подтверждение действий.", "Вы уверены что хотите создать файл для сохранения?");
+
+		if (optional.get().equals(ButtonType.OK)) {
+			DirectoryChooser directoryChooser = new DirectoryChooser();
+			File selectedDirectory = directoryChooser.showDialog((Stage) createButton.getScene().getWindow());
+
+			if (selectedDirectory != null) {
+				try {
+					Company.getInstants().create(selectedDirectory);
+				} catch (IOException e) {
+					WindowHandler.getInstants().showErrorMessage("Произошла ошибка создания файла!", e.getMessage());
+					e.printStackTrace();
+				}
+			}
+		}	
 	}
 }

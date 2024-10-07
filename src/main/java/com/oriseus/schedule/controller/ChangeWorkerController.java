@@ -16,7 +16,10 @@ public class ChangeWorkerController {
     @FXML
     TextField secondNameTextField;
     @FXML
+    TextField positionTextField;
+    @FXML
     TextField phoneNumberTextField;
+    
     @FXML
     Button okButton;
     @FXML
@@ -27,6 +30,7 @@ public class ChangeWorkerController {
         nameTextField.setText(MainController.tempWorker.getName());
         surnamTextField.setText(MainController.tempWorker.getSurname());
         secondNameTextField.setText(MainController.tempWorker.getSecondName());
+        positionTextField.setText(MainController.tempWorker.getPosition());
         phoneNumberTextField.setText(MainController.tempWorker.getPhoneNumber());
 	} 
 
@@ -35,7 +39,7 @@ public class ChangeWorkerController {
         if ((!nameTextField.getText().isEmpty() || !nameTextField.getText().isBlank()) &&
             (!surnamTextField.getText().isEmpty() || !surnamTextField.getText().isBlank()) &&
             (!secondNameTextField.getText().isEmpty() || !secondNameTextField.getText().isBlank())) {
-            MainController.tempWorker = new Worker(nameTextField.getText(), surnamTextField.getText(), secondNameTextField.getText(), phoneNumberTextField.getText());
+            MainController.tempWorker = new Worker(nameTextField.getText(), surnamTextField.getText(), secondNameTextField.getText(), positionTextField.getText(), phoneNumberTextField.getText());
 
             Stage stage = (Stage) okButton.getScene().getWindow();
 		    stage.close();

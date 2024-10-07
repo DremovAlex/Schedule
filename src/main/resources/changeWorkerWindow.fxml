@@ -6,13 +6,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="542.0" prefWidth="535.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oriseus.schedule.controller.ChangeWorkerController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="655.0" prefWidth="537.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oriseus.schedule.controller.ChangeWorkerController">
    <children>
-      <Button fx:id="cancelButton" layoutX="408.0" layoutY="489.0" mnemonicParsing="false" onAction="#cancelButtonClick" prefHeight="30.0" prefWidth="100.0" text="cancel" textAlignment="CENTER">
+      <Button fx:id="cancelButton" layoutX="423.0" layoutY="611.0" mnemonicParsing="false" onAction="#cancelButtonClick" prefHeight="30.0" prefWidth="100.0" text="cancel" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font></Button>
-      <Button fx:id="okButton" layoutX="28.0" layoutY="489.0" mnemonicParsing="false" onAction="#okButtonClick" prefHeight="30.0" prefWidth="100.0" text="ok" textAlignment="CENTER">
+      <Button fx:id="okButton" layoutX="14.0" layoutY="611.0" mnemonicParsing="false" onAction="#okButtonClick" prefHeight="30.0" prefWidth="100.0" text="ok" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font></Button>
@@ -26,7 +26,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <TextField fx:id="phoneNumberTextField" layoutX="92.0" layoutY="407.0" prefHeight="30.0" prefWidth="352.0" />
+      <TextField fx:id="positionTextField" layoutX="92.0" layoutY="407.0" prefHeight="30.0" prefWidth="352.0" />
       <TextField fx:id="surnamTextField" layoutX="92.0" layoutY="213.0" prefHeight="30.0" prefWidth="352.0" />
       <TextField fx:id="secondNameTextField" layoutX="92.0" layoutY="315.0" prefHeight="30.0" prefWidth="352.0" />
       <Text layoutX="117.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Фамилия" textAlignment="CENTER" wrappingWidth="300.0">
@@ -39,7 +39,13 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text layoutX="118.0" layoutY="387.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Номер телефона" textAlignment="CENTER" wrappingWidth="300.0">
+      <Text layoutX="118.0" layoutY="387.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Должность" textAlignment="CENTER" wrappingWidth="300.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <TextField fx:id="phoneNumberTextField" layoutX="93.0" layoutY="504.0" prefHeight="30.0" prefWidth="352.0" />
+      <Text layoutX="119.0" layoutY="484.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Номер телефона" textAlignment="CENTER" wrappingWidth="300.0">
          <font>
             <Font size="14.0" />
          </font>

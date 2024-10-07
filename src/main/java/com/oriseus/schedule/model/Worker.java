@@ -5,6 +5,7 @@ public class Worker {
 	private String name;
 	private String surname;
 	private String secondName;
+	private String position;
 	private String phoneNumber;
 	private ScheduleObject scheduleObject;
 	
@@ -15,10 +16,11 @@ public class Worker {
 		scheduleObject = new ScheduleObject();
 	}
 	
-	public Worker(String name, String surname, String secondName, String phoneNumber) {
+	public Worker(String name, String surname, String secondName, String position, String phoneNumber) {
 		this.name = name;
 		this.surname = surname;
 		this.secondName = secondName;
+		this.position = position;
 		this.phoneNumber = phoneNumber;
 		scheduleObject = new ScheduleObject();
 	}
@@ -53,6 +55,14 @@ public class Worker {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
 	}
 
 	public ScheduleObject getScheduleObject() {

@@ -55,6 +55,18 @@
                      </children></AnchorPane>
               </content>
             </Tab>
+            <Tab text="Файл">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="saveButton" layoutX="28.0" layoutY="23.0" mnemonicParsing="false" onAction="#saveFile" text="Сохранить" />
+                        <Button fx:id="loadButton" layoutX="121.0" layoutY="23.0" mnemonicParsing="false" onAction="#loadFile" text="Загрузить" />
+                        <Button fx:id="choiceButton" layoutX="206.0" layoutY="23.0" mnemonicParsing="false" onAction="#choiceFile" text="Выбрать" />
+                        <Button fx:id="createButton" layoutX="287.0" layoutY="23.0" mnemonicParsing="false" onAction="#createFile" text="Создать" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
         </tabs>
       </TabPane>
       <AnchorPane prefHeight="50.0" prefWidth="1091.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">

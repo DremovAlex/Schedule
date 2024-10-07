@@ -1,9 +1,13 @@
 package com.oriseus.schedule;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.oriseus.schedule.model.WorkingPlace;
+import com.oriseus.schedule.utils.FileHamdler;
 
 public class Company {
     
@@ -56,5 +60,21 @@ public class Company {
             }
         }
         return null;
+    }
+
+    public void save() {
+        FileHamdler.getInstants().saveFile(workingPlaces);
+    }
+
+    public void load() {
+        workingPlaces = FileHamdler.getInstants().loadFile();
+    }
+
+    public void choice(File file) throws FileNotFoundException, IOException {
+        FileHamdler.getInstants().choiceFile(file);
+    }
+
+    public void create(File directory) throws IOException {
+        FileHamdler.getInstants().createFile(directory);
     }
 }
