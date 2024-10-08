@@ -3,8 +3,9 @@ package com.oriseus.schedule.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Stack;
+import java.io.Serializable;
 
-public class Day {
+public class Day implements Serializable {
 
 	private LocalDate date;
 	

@@ -947,7 +947,12 @@ public class MainController {
 		Optional<ButtonType> optional = WindowHandler.getInstants().openChoiceDialog("Подтверждение действий.", "Подтверждение действий.", "Вы уверены что хотите сохранить состояние программы?");
 
 		if (optional.get().equals(ButtonType.OK)) {
-			Company.getInstants().save();
+			try {
+				Company.getInstants().save();
+			} catch (IOException e) {
+				WindowHandler.getInstants().showErrorMessage("Произошла ошибка сохранения в файл!", e.getMessage());
+				e.printStackTrace();
+			}
 		}
 	}
 	@FXML
@@ -955,7 +960,14 @@ public class MainController {
 		Optional<ButtonType> optional = WindowHandler.getInstants().openChoiceDialog("Подтверждение действий.", "Подтверждение действий.", "Вы уверены что хотите загрузить состояние программы?");
 
 		if (optional.get().equals(ButtonType.OK)) {
-			Company.getInstants().load();
+			try {
+				Company.getInstants().load();
+			} catch (ClassNotFoundException | IOException e) {
+				WindowHandler.getInstants().showErrorMessage("Произошла ошибка загрузки из файла!", e.getMessage());
+				e.printStackTrace();
+			}
+
+			refreshScene();
 		}
 	}
 	@FXML

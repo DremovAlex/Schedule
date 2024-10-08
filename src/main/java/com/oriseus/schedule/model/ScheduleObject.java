@@ -5,8 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.io.Serializable;
 
-public class ScheduleObject {
+public class ScheduleObject implements Serializable {
 
 	List<Day> dayLinkedList;
 	

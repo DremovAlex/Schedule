@@ -1,6 +1,8 @@
 package com.oriseus.schedule.model;
 
-public class Worker {
+import java.io.Serializable;
+
+public class Worker implements Serializable {
 
 	private String name;
 	private String surname;

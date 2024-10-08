@@ -45,7 +45,12 @@ public class SettingHundler {
 
     }
 
-    public String loadSavedFilePath() {
-        return null;
+    public String loadSavedFilePath() throws FileNotFoundException, IOException {
+        File propertiesFile = new File(getPathToProperties() + "file.properties");
+        
+        properties.load(new FileInputStream(propertiesFile));
+        String path = properties.getProperty("pathToSavedFile");
+
+        return path;
     }
 }

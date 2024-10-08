@@ -62,11 +62,11 @@ public class Company {
         return null;
     }
 
-    public void save() {
+    public void save() throws FileNotFoundException, IOException {
         FileHamdler.getInstants().saveFile(workingPlaces);
     }
 
-    public void load() {
+    public void load() throws FileNotFoundException, ClassNotFoundException, IOException {
         workingPlaces = FileHamdler.getInstants().loadFile();
     }
 

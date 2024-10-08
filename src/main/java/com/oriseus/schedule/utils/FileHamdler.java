@@ -1,8 +1,6 @@
 package com.oriseus.schedule.utils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 import com.oriseus.schedule.model.WorkingPlace;
@@ -24,13 +22,22 @@ public class FileHamdler {
         }
     }
 
-    public void saveFile(List<WorkingPlace> list) {
-        //Добавить сериализацию
+    public void saveFile(List<WorkingPlace> list) throws FileNotFoundException, IOException {
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(SettingHundler.getInstants().loadSavedFilePath()));
+ 
+        objectOutputStream.writeObject(list);
+        objectOutputStream.close();
     }
 
-    public List<WorkingPlace> loadFile() {
-        //Добавить десериализацию
-        return null;
+    public List<WorkingPlace> loadFile() throws FileNotFoundException, IOException, ClassNotFoundException {
+        ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(SettingHundler.getInstants().loadSavedFilePath()));
+ 
+        @SuppressWarnings("unchecked")
+        List<WorkingPlace> list = (List<WorkingPlace>) objectInputStream.readObject();
+        
+        objectInputStream.close();
+
+        return list;
     }
 
     public void createFile(File directory) throws FileNotFoundException, IOException {

@@ -1,9 +1,10 @@
 package com.oriseus.schedule.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorkingPlace {
+public class WorkingPlace implements Serializable {
 	private String name;
 	private List<Worker> listOfWorkers;
 	
