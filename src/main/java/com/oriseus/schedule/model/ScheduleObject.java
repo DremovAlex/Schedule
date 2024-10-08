@@ -5,13 +5,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 
 public class ScheduleObject implements Serializable {
 
 	List<Day> dayLinkedList;
 	
-	public ScheduleObject() {
+	public ScheduleObject() throws FileNotFoundException, IOException {
 		dayLinkedList = new LinkedList<Day>();
 		setListOfDays();		
 	}
@@ -125,7 +127,7 @@ public class ScheduleObject implements Serializable {
 		}
 	}
 
-	private void setListOfDays() {
+	private void setListOfDays() throws FileNotFoundException, IOException {
 		LocalDate pastDate = LocalDate.of(2020, 1, 1);
 		LocalDate futureDate = LocalDate.of(2039, 12, 31);
 		

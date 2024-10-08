@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="787.0" prefWidth="731.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oriseus.schedule.controller.SettingsController">
+   <children>
+      <Button fx:id="okButton" layoutX="34.0" layoutY="741.0" mnemonicParsing="false" onAction="#okButtonClick" prefHeight="25.0" prefWidth="80.0" text="Ok" textAlignment="CENTER" />
+      <Button fx:id="cancelButton" layoutX="622.0" layoutY="741.0" mnemonicParsing="false" onAction="#cancelButtonClick" prefHeight="25.0" prefWidth="80.0" text="Cancel" />
+      <Text layoutX="34.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Не рабочие часы при графике пять - два" />
+      <TextField fx:id="fiveToTwoTextField" layoutX="126.0" layoutY="63.0" prefHeight="25.0" prefWidth="47.0" />
+      <Button fx:id="fiveToTwoUpButton" layoutX="69.0" layoutY="63.0" mnemonicParsing="false" onAction="#fiveToTwoUpButtonClick" prefHeight="25.0" prefWidth="47.0" text="^" />
+      <Button fx:id="fiveToTwoDowButton" layoutX="182.0" layoutY="63.0" mnemonicParsing="false" onAction="#fiveToTwoDowButtonClick" prefHeight="25.0" prefWidth="47.0" text="v" />
+      <Text layoutX="36.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Не рабочие часы при графике два - два" />
+      <TextField fx:id="twoToTwoTextField" layoutX="126.0" layoutY="144.0" prefHeight="25.0" prefWidth="47.0" />
+      <Button fx:id="twoToTwoUpButton" layoutX="69.0" layoutY="144.0" mnemonicParsing="false" onAction="#twoToTwoUpButtonClick" prefHeight="25.0" prefWidth="47.0" text="^" textAlignment="CENTER" />
+      <Button fx:id="twoToTwoDownButton" layoutX="182.0" layoutY="144.0" mnemonicParsing="false" onAction="#twoToTwoDownButtonClick" prefHeight="25.0" prefWidth="47.0" text="v" />
+      <CheckBox fx:id="isFridayShortDayCheckBox" layoutX="476.0" layoutY="67.0" mnemonicParsing="false" text="Пятница - сокращенный день" />
+   </children>
+</AnchorPane>

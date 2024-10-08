@@ -13,8 +13,10 @@ import com.oriseus.schedule.Company;
 import com.oriseus.schedule.model.Day;
 import com.oriseus.schedule.model.DayStatus;
 import com.oriseus.schedule.model.ScheduleType;
+import com.oriseus.schedule.model.SettingObject;
 import com.oriseus.schedule.model.Worker;
 import com.oriseus.schedule.model.WorkingPlace;
+import com.oriseus.schedule.utils.SettingHundler;
 import com.oriseus.schedule.utils.WindowHandler;
 
 import javafx.event.ActionEvent;
@@ -117,6 +119,11 @@ public class MainController {
 	@FXML
 	Button createButton;
 
+	@FXML
+	Button settingButton;
+	@FXML
+	Button daySettingButton;
+
 	ContextMenu workerContextMenu;
 	ContextMenu monthContextMenu;
 	ContextMenu setScheduleContextMenu;
@@ -125,6 +132,7 @@ public class MainController {
 	public static Worker tempWorker;
 	public static int dayCounter;
 	public static Day technicalDay;
+	public static SettingObject settingObject;
 
     @FXML
     public void initialize() {
@@ -292,7 +300,7 @@ public class MainController {
 
     private VBox getNameAndPhoneNumber(Worker worker) {
     	Text name = new Text(worker.getSurname() + " " + worker.getName() + " " + worker.getSecondName());
-    	Text phoneNumber = new Text("Номер телефона: " + worker.getPhoneNumber());
+    	Text positionAndPhoneNumber = new Text("Должность: " + worker.getPosition() + " Номер телефона: " + worker.getPhoneNumber());
 
 		Text whatIsSelected = new Text();
 		if (selectedDay != null) {
@@ -325,7 +333,7 @@ public class MainController {
     	VBox vbox = new VBox();
     	
     	vbox.getChildren().add(name);
-    	vbox.getChildren().add(phoneNumber);
+    	vbox.getChildren().add(positionAndPhoneNumber);
 		vbox.getChildren().add(whatIsSelected);
     	
     	return vbox;
@@ -482,6 +490,8 @@ public class MainController {
 					stackPane.getChildren().addAll(rectangle[i], text);
 					
 					rectangleBox.getChildren().add(stackPane);
+					
+					rectangleBox.getChildren().add(getWorkingHoursOfDay(day));
 				} else if (i == 0 && day.getStartWorkTime().isAfter(day.getEndWorkTime())) {
 					rectangle[i] = getColoredRectangle(day, 100, 50);
 					
@@ -502,6 +512,8 @@ public class MainController {
 					stackPane.getChildren().addAll(rectangle[i], text);
 					
 					rectangleBox.getChildren().add(stackPane);
+
+					rectangleBox.getChildren().add(getWorkingHoursOfDay(day));
 				}
 
 			} else {
@@ -511,11 +523,20 @@ public class MainController {
 
 				stackPane.getChildren().addAll(getColoredRectangle(day, 100, 100), dayStatusText);
 				rectangleBox.getChildren().add(stackPane);
+
 				break;
 			}
 
 		}
 		return rectangleBox;
+	}
+
+	//Возвращает строку с общим колличеством отработанных часов
+	private Text getWorkingHoursOfDay(Day day) {
+		Text hoursOfWork = new Text();
+		String hours = String.valueOf(day.getHoursOfWork());
+		hoursOfWork.setText("Всего: " + hours + " часов");
+		return hoursOfWork;
 	}
 
 	private Rectangle getColoredRectangle(Day day, int width, int height) {
@@ -812,7 +833,12 @@ public class MainController {
 				refreshScene();
 				break;
 			case "Удалить расписание полностью" :
-				tempWorker.getScheduleObject().deleteSchedule(new Day(LocalDate.of(2020, 1, 1)));
+				try {
+					tempWorker.getScheduleObject().deleteSchedule(new Day(LocalDate.of(2020, 1, 1)));
+				} catch (IOException e) {
+					WindowHandler.getInstants().showErrorMessage("Ошибка удаления работника!", e.getMessage());
+					e.printStackTrace();
+				}
 				refreshScene();
 				break;
 			default:
@@ -920,7 +946,12 @@ public class MainController {
 
 	@FXML
 	public void changeSingleDay() {
-		technicalDay = new Day(selectedDay.getDate());
+		try {
+			technicalDay = new Day(selectedDay.getDate());
+		} catch (IOException e) {
+			WindowHandler.getInstants().showErrorMessage("Ошибка изменения дня!", e.getMessage());
+			e.printStackTrace();
+		}
 		technicalDay.setScheduleType(selectedDay.getScheduleType());
 		technicalDay.pushDayStatus(selectedDay.peekDayStatus());
 		technicalDay.setStartWorkTime(selectedDay.getStartWorkTime());
@@ -1005,5 +1036,22 @@ public class MainController {
 				}
 			}
 		}	
+	}
+
+	@FXML
+	public void settings() {
+
+		try {
+			WindowHandler.getInstants().openModalWindow("Общие настройки", 
+							"settingsWindow", 750, 800);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@FXML
+	public void daySettings() {
+		System.out.println("Day Settings");
 	}
 }

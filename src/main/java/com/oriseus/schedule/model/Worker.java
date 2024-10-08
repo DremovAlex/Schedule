@@ -1,5 +1,7 @@
 package com.oriseus.schedule.model;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 
 public class Worker implements Serializable {
@@ -11,14 +13,14 @@ public class Worker implements Serializable {
 	private String phoneNumber;
 	private ScheduleObject scheduleObject;
 	
-	public Worker(String name, String surname, String secondName) {
+	public Worker(String name, String surname, String secondName) throws FileNotFoundException, IOException {
 		this.name = name;
 		this.surname = surname;
 		this.secondName = secondName;
 		scheduleObject = new ScheduleObject();
 	}
 	
-	public Worker(String name, String surname, String secondName, String position, String phoneNumber) {
+	public Worker(String name, String surname, String secondName, String position, String phoneNumber) throws FileNotFoundException, IOException {
 		this.name = name;
 		this.surname = surname;
 		this.secondName = secondName;

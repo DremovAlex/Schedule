@@ -1,5 +1,7 @@
 package com.oriseus.schedule.controller;
 
+import java.io.IOException;
+
 import com.oriseus.schedule.model.Worker;
 import com.oriseus.schedule.utils.WindowHandler;
 
@@ -35,10 +37,14 @@ public class NewWorkerController {
         if ((!nameTextField.getText().isEmpty() || !nameTextField.getText().isBlank()) &&
             (!surnamTextField.getText().isEmpty() || !surnamTextField.getText().isBlank()) &&
             (!secondNameTextField.getText().isEmpty() || !secondNameTextField.getText().isBlank())) {
-            MainController.tempWorker = new Worker(nameTextField.getText(), surnamTextField.getText(), secondNameTextField.getText(), positionTextField.getText(), phoneNumberTextField.getText());
-
-            Stage stage = (Stage) okButton.getScene().getWindow();
-		    stage.close();
+            try {
+                MainController.tempWorker = new Worker(nameTextField.getText(), surnamTextField.getText(), secondNameTextField.getText(), positionTextField.getText(), phoneNumberTextField.getText());
+                Stage stage = (Stage) okButton.getScene().getWindow();
+                stage.close();
+            } catch (IOException e) {
+                WindowHandler.getInstants().showErrorMessage("Ошибка создания нового работника!", e.getMessage());
+                e.printStackTrace();
+            }          
         } else {
             WindowHandler.getInstants().showErrorMessage("Поля не заполнены.", "Пожалуйста, заполните имя, фамилию и отчество. Номер телефона не обязателен к заполнению.");
         }

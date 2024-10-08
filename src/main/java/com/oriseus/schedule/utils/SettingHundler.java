@@ -9,6 +9,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
+import com.oriseus.schedule.model.SettingObject;
+
 public class SettingHundler {
 
     private static SettingHundler settingHundler;
@@ -52,5 +54,32 @@ public class SettingHundler {
         String path = properties.getProperty("pathToSavedFile");
 
         return path;
+    }
+
+    public SettingObject loadDaySettings() throws FileNotFoundException, IOException {
+        File propertiesFile = new File(getPathToProperties() + "daySettings.properties");
+        
+        properties.load(new FileInputStream(propertiesFile));
+        int notWorkingHoursFiveToTwo = Integer.valueOf(properties.getProperty("notWorkingHoursFiveToTwo"));
+        int notWorkingHoursTwoToTwo = Integer.valueOf(properties.getProperty("notWorkingHoursTwoToTwo"));
+        boolean isFridayShortDay = Boolean.valueOf(properties.getProperty("isFridayShortDay"));
+
+        SettingObject settingObject = new SettingObject();
+        settingObject.setNotWorkingHoursFiveToTwo(notWorkingHoursFiveToTwo);
+        settingObject.setNotWorkingHoursTwoToTwo(notWorkingHoursTwoToTwo);
+        settingObject.setFridayShortDay(isFridayShortDay);
+        return settingObject;
+    }
+
+    public void saveDaySettings(SettingObject settingObject) throws FileNotFoundException, IOException {
+        File propertiesFile = new File(getPathToProperties() + "daySettings.properties");
+        
+        properties.load(new FileInputStream(propertiesFile));
+        
+        properties.setProperty("notWorkingHoursFiveToTwo", String.valueOf(settingObject.getNotWorkingHoursFiveToTwo()));
+        properties.setProperty("notWorkingHoursTwoToTwo", String.valueOf(settingObject.getNotWorkingHoursTwoToTwo()));
+        properties.setProperty("isFridayShortDay", String.valueOf(settingObject.isFridayShortDay()));
+
+        properties.store(new FileWriter(propertiesFile), "");
     }
 }
